@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="mainInheritance1Academy.cpp">
+    <ClCompile Include="mainInheritance2Files.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
