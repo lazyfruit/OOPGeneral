@@ -33,6 +33,10 @@ public:
 		return sqrt(pow(this->x - other.x, 2) + pow(this->y - other.y, 2));
 		//pow - возведение в степень; sqrt(square root) - квадратный корень
 	}
+	void print()const
+	{
+		cout << "X = " << x << "\t" << "Y = " << y << endl;
+	}
 };
 
 double distance(Point A, Point B)
@@ -44,6 +48,7 @@ double distance(Point A, Point B)
 }
 
 //#define STRUCT_POINT
+//#define DISTANCE
 
 void main()
 {
@@ -60,10 +65,12 @@ void main()
 	cout << pA->x << "\t" << pA->y << endl;
 #endif // STRUCT_POINT
 
+#ifdef DISTANCE
 	Point A;
 	A.set_x(2);
 	A.set_y(3);
 	cout << A.get_x() << "\t" << A.get_y() << endl;
+	A.print();
 
 	Point B;
 	B.set_x(3);
@@ -77,4 +84,7 @@ void main()
 
 	cout << "Расстояние между точками A и B: " << distance(A, B) << endl;
 	cout << "Расстояние между точками B и A: " << distance(B, A) << endl;
+#endif // DISTANCE
+
+
 }
