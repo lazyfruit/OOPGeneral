@@ -86,5 +86,7 @@ void main()
 	cout << "Расстояние между точками B и A: " << distance(B, A) << endl;
 #endif // DISTANCE
 
+	Point A;		//Default constructor
+	A.print();
 
 }
