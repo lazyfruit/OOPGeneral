@@ -75,7 +75,7 @@ void main()
 
 	Square square(5, Color::console_red);
 
-	cout << "Площадm квадрата: " << square.get_area << endl;
+	cout << "Площадь квадрата: " << square.get_area << endl;
 	cout << "Периметр квадрата: " << square.get_perimeter << endl;
 	square.draw();
 }

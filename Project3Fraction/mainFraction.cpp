@@ -1,17 +1,19 @@
-//Fraction - описываем простую дробь
-#include<iostream>
-
+п»ї#include<iostream>
 using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
 
 class Fraction;
 Fraction operator*(Fraction left, Fraction right);
 
 class Fraction
 {
-	int integer;		//Целая часть
-	int numerator;		//Числитель
-	int denominator;	//Знаменатель
+	int integer;		//Р¦РµР»Р°СЏ С‡Р°СЃС‚СЊ
+	int numerator;		//Р§РёСЃР»РёС‚РµР»СЊ
+	int denominator;	//Р—РЅР°РјРµРЅР°С‚РµР»СЊ
 public:
+	//		get_methods
 	int get_integer()const
 	{
 		return integer;
@@ -24,6 +26,7 @@ public:
 	{
 		return denominator;
 	}
+	//		set_methods
 	void set_integer(int integer)
 	{
 		this->integer = integer;
@@ -37,18 +40,16 @@ public:
 		if (denominator == 0)denominator = 1;
 		this->denominator = denominator;
 	}
-
-	//					Constructors:
-	Fraction()
+	//		Constructors:
+	Fraction()	//Default constructor - РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 	{
 		this->integer = 0;
 		this->numerator = 0;
 		this->denominator = 1;
 		cout << "DefaultConstructor:\t" << this << endl;
 	}
-	explicit Fraction(int integer)
+	/*explicit*/ Fraction(int integer)	//Single-argument constructor - РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РѕРґРЅРёРј РїР°СЂР°РјРµС‚СЂРѕРј
 	{
-		//Single-argument constructor - Конструктор с одним параметром.
 		this->integer = integer;
 		this->numerator = 0;
 		this->denominator = 1;
@@ -61,7 +62,7 @@ public:
 		set_denominator(denominator);
 		cout << "Constructor:\t\t" << this << endl;
 	}
-	Fraction(int integer, int numerator, int denominator)
+	Fraction(int integer /*= 0*/, int numerator /*= 0*/, int denominator /*= 1*/)
 	{
 		this->integer = integer;
 		this->numerator = numerator;
@@ -79,8 +80,7 @@ public:
 	{
 		cout << "Destructor\t" << this << endl;
 	}
-
-	//				Operators:
+	//		Operators:
 	Fraction& operator=(const Fraction& other)
 	{
 		this->integer = other.integer;
@@ -89,21 +89,18 @@ public:
 		cout << "CopyAssignment:\t" << this << endl;
 		return *this;
 	}
-
 	Fraction& operator*=(const Fraction& other)
 	{
 		return *this = *this * other;
 	}
-
-	//Increment/Decrement
+	//		Increment/Decrement
 	Fraction& operator++()	//Prefix increment
 	{
 		to_proper();
 		integer++;
 		return *this;
 	}
-
-	//				Type-cast operators
+	//		Type-cast operators
 	explicit operator int()
 	{
 		return integer;
@@ -112,40 +109,10 @@ public:
 	{
 		return integer + (double)numerator / denominator;
 	}
-
-	//				Methods:
-	Fraction& to_proper()
-	{
-		//Переводит дробь в правильную - выделяет целую часть:
-		integer += numerator / denominator;
-		numerator %= denominator;
-		return *this;
-	}
-	Fraction& to_improper()
-	{
-		//Переводит дробь в НЕправильную - интегрирует целую часть в числитель:
-		numerator += integer * denominator;
-		integer = 0;
-		return *this;
-	}
-
-	Fraction& inverted()
-	{
-		to_improper();
-		int buffer = numerator;
-		numerator = denominator;
-		denominator = buffer;
-		return *this;
-	}
-
-	void reduce()
-	{
-		//Сокращает дробь:
-		//https://www.webmath.ru/poleznoe/formules_12_7.php
-	}
+	//		Methods:
 	void print()
 	{
-		if (integer)cout << integer;	//Если есть целая часть, выводим ее на экран
+		if (integer)cout << integer;	//Р•СЃР»Рё РµСЃС‚СЊ С†РµР»Р°СЏ С‡Р°СЃС‚СЊ, РІС‹РІРѕРґРёРј РµРµ РЅР° СЌРєСЂР°РЅ
 		if (numerator)
 		{
 			if (integer)cout << "(";
@@ -155,8 +122,34 @@ public:
 		else if (integer == 0)cout << 0;
 		cout << endl;
 	}
+	Fraction& to_proper()
+	{
+		//РџРµСЂРµРІРѕРґРёС‚ РґСЂРѕР±СЊ РІ РїСЂР°РІРёР»СЊРЅСѓСЋ - РІС‹РґРµР»СЏРµС‚ С†РµР»СѓСЋ С‡Р°СЃС‚СЊ:
+		integer += numerator / denominator;
+		numerator %= denominator;
+		return *this;
+	}
+	Fraction& to_improper()
+	{
+		//РџРµСЂРµРІРѕРґРёС‚ РґСЂРѕР±СЊ РІ РЅРµРїСЂР°РІРёР»СЊРЅСѓСЋ - РёРЅС‚РµРіСЂРёСЂСѓРµС‚ С†РµР»СѓСЋ С‡Р°СЃС‚СЊ РІ С‡РёСЃР»РёС‚РµР»СЊ:
+		numerator += integer * denominator;
+		integer = 0;
+		return *this;
+	}
+	Fraction& inverted()
+	{
+		to_improper();
+		int buffer = numerator;
+		numerator = denominator;
+		denominator = buffer;
+		return *this;
+	}
+	void reduce()
+	{
+		//РЎРѕРєСЂР°С‰Р°РµС‚ РґСЂРѕР±СЊ:
+		//https://www.webmath.ru/poleznoe/formules_12_7.php
+	}
 };
-
 Fraction operator*(Fraction left, Fraction right)
 {
 	left.to_improper();
@@ -171,21 +164,19 @@ Fraction operator*(Fraction left, Fraction right)
 	result.to_proper();
 	return result;*/
 	
-	//Явно вызываем конструктор прямо в return.\
-	Этот конструктор создает временный безымянный объект,\
-	который return сразу же возвращает на место вызова:
+	//РЇРІРЅРѕ РІС‹Р·С‹РІР°РµРј РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїСЂСЏРјРѕ РІ return.\
+	Р­С‚РѕС‚ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃРѕР·РґР°РµС‚ РІСЂРµРјРµРЅРЅС‹Р№ Р±РµР·С‹РјСЏРЅРЅС‹Р№ РѕР±СЉРµРєС‚,\
+	РєРѕС‚РѕСЂС‹Р№ return СЃСЂР°Р·Сѓ Р¶Рµ РІРѕР·РІСЂР°С‰Р°РµС‚ РЅР° РјРµСЃС‚Рѕ РІС‹Р·РѕРІР°:
 	return Fraction
 	(
 		left.get_numerator() * right.get_numerator(),
 		left.get_denominator() * right.get_denominator()
 	).to_proper();
 }
-
 Fraction operator/(Fraction left, Fraction right)
 {
 	return left * right.inverted();
 }
-
 //		Comparison operators
 bool operator==(Fraction left, Fraction right)
 {
@@ -226,10 +217,9 @@ bool operator<=(const Fraction& left, const Fraction& right)
 	//return left < right || left == right;
 	return !(left > right);
 }
-
 ostream& operator<<(ostream& os, const Fraction& obj)
 {
-	if (obj.get_integer())os << obj.get_integer();	//Если есть целая часть, выводим ее на экран
+	if (obj.get_integer())os << obj.get_integer();	//Р•СЃР»Рё РµСЃС‚СЊ С†РµР»Р°СЏ С‡Р°СЃС‚СЊ, РІС‹РІРѕРґРёРј РµРµ РЅР° СЌРєСЂР°РЅ
 	if (obj.get_numerator())
 	{
 		if (obj.get_integer())os << "(";
@@ -261,7 +251,6 @@ istream& operator>>(istream& is, Fraction& obj)
 	{
 		cout << value[i] << "\t";
 	}*/
-
 	switch (n)
 	{
 	case 1: obj.set_integer(atoi(value[0])); break;
@@ -276,7 +265,6 @@ istream& operator>>(istream& is, Fraction& obj)
 	cout << endl;
 	return is;
 }
-
 //#define CONSTRUCTORS_CHECK
 //#define OSTREAM_CHECK
 //#define ARITHMETICAL_OPERATORS_CHECK
@@ -289,16 +277,15 @@ void main()
 {
 	setlocale(LC_ALL, "");
 #ifdef CONSTRUCTORS_CHECK
-	Fraction A;		//Default constructor
+	Fraction A;		//Default constructor (РєРѕРЅС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ)
 	A.print();
-	Fraction B = 5;	//Single-argument constructor (Конструктор с одним параметром).
+	Fraction B = 5;	//Single-argument constructor (РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РѕРґРЅРёРј РїР°СЂР°РјРµС‚СЂРѕРј)
 	B.print();
 	Fraction C(1, 2);
 	C.print();
 	Fraction D(2, 3, 4);
 	D.print();
 #endif // CONSTRUCTORS_CHECK
-
 #ifdef OSTREAM_CHECK
 	Fraction A(14, 4);
 	A.to_proper();
@@ -306,7 +293,6 @@ void main()
 	A.to_improper();
 	A.print();
 #endif // OSTREAM_CHECK
-
 #ifdef ARITHMETICAL_OPERATORS_CHECK
 	Fraction A(1, 2, 3);
 	Fraction B(2, 4, 5);
@@ -323,7 +309,6 @@ void main()
 	//cout << A << endl;
 	cout << ++A << endl;
 #endif // ARITHMETICAL_OPERATORS_CHECK
-
 #ifdef COMPARISON_OPERATORS
 	Fraction A(1, 2, 3);
 	Fraction B(1, 100, 220);
@@ -332,14 +317,12 @@ void main()
 	cout << (A > B) << endl;
 	cout << (A < B) << endl;
 #endif // COMPARISON_OPERATORS
-
 #ifdef ISTREAM_OPERATOR_CHECK
 	Fraction A;
-	cout << "Введите дробь: ";
+	cout << "Р’РІРµРґРёС‚Рµ РґСЂРѕР±СЊ: ";
 	cin >> A;
 	cout << A << endl;
 #endif // ISTREAM_OPERATOR_CHECK
-
 #ifdef TYPE_CONVERSION_BASICS
 	int a = 2;			//No conversion
 
@@ -351,7 +334,6 @@ void main()
 
 	cout << d << endl;
 #endif // TYPE_CONVERSION_BASICS
-
 #ifdef CONVERSION_FROM_OTHER_TO_CLASS
 	double a = 2;				//from int to double (from less to more)
 	Fraction A = (Fraction)5;	//from int to Fraction (from less to more)
@@ -367,9 +349,9 @@ void main()
 	cout << C << endl;
 #endif // CONVERSION_FROM_OTHER_TO_CLASS
 
-	Fraction A(2, 3, 4);
+	/*Fraction A(2, 3, 4);
 	int a = (int)A;
 	cout << a << endl;
 	double b = double(A);
-	cout << b << endl;
+	cout << b << endl;*/
 }
