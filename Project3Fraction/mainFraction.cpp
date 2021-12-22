@@ -420,17 +420,6 @@ void main()
 	cout << C << endl;
 #endif // CONVERSION_FROM_OTHER_TO_CLASS
 #ifdef CONVERSION_FROM_CLASS_TO_OTHER
-	//Type-cast operators
-/*
-----------------------------
-operator type()
-{
-	//conversion is here:
-	......
-	return ...;
-}
-----------------------------
-*/
 	Fraction A(2, 3, 4);
 	int a = (int)A;
 	cout << A << endl;
