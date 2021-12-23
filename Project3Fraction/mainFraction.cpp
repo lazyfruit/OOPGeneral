@@ -6,7 +6,7 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-#define razdel "\n----------------------------------------\n"
+#define razdel cout << "\n----------------------------------------\n" << endl
 
 class Fraction;
 Fraction operator*(Fraction left, Fraction right);
@@ -328,7 +328,7 @@ istream& operator>>(istream& is, Fraction& obj)
 //#define COMPARISON_OPERATORS
 //#define ISTREAM_OPERATOR_CHECK
 //#define TYPE_CONVERSION_BASICS
-//#define CONVERSION_FROM_OTHER_TO_CLASS
+#define CONVERSION_FROM_OTHER_TO_CLASS
 //#define CONVERSION_FROM_CLASS_TO_OTHER
 //#define DOUBLE_CONSTRUCTOR_CHECK
 
@@ -437,5 +437,4 @@ void main()
 	Fraction C(1, 3);
 	cout << C * 3 << endl;
 #endif // DOUBLE_CONSTRUCTOR_CHECK
-
 }

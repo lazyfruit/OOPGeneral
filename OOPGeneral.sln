@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31727.386
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project1IntroductionOOP", "Project1IntroductionOOP\Project1IntroductionOOP.vcxproj", "{3EC91A4F-90B2-4A2A-A70B-165D380552F8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project3Fraction", "Project3Fraction\Project3Fraction.vcxproj", "{7A6DB75C-DCC9-4624-990C-C7FF50FC4410}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project2Fraction", "Project3Fraction\Project3Fraction.vcxproj", "{7A6DB75C-DCC9-4624-990C-C7FF50FC4410}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project5Inheritance1Academy", "Project5Inheritance1Academy\Project5Inheritance1Academy.vcxproj", "{926D7497-A824-4639-BEAB-FADC5AEE5036}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project6AbstractBaseClass", "Project6AbstractBaseClass\Project6AbstractBaseClass.vcxproj", "{FCEF0C5F-2708-4DBF-BB9A-7C00CB865BE4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project6z1AbstractGeometry", "Project6z1AbstractGeometry\Project6z1AbstractGeometry.vcxproj", "{D73299E4-9D3E-4220-8AB7-079F71AEACA2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project3String", "Project3String\Project3String.vcxproj", "{0821ADFE-43C1-4620-AA46-3727080C4E3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,14 @@ Global
 		{D73299E4-9D3E-4220-8AB7-079F71AEACA2}.Release|x64.Build.0 = Release|x64
 		{D73299E4-9D3E-4220-8AB7-079F71AEACA2}.Release|x86.ActiveCfg = Release|Win32
 		{D73299E4-9D3E-4220-8AB7-079F71AEACA2}.Release|x86.Build.0 = Release|Win32
+		{0821ADFE-43C1-4620-AA46-3727080C4E3E}.Debug|x64.ActiveCfg = Debug|x64
+		{0821ADFE-43C1-4620-AA46-3727080C4E3E}.Debug|x64.Build.0 = Debug|x64
+		{0821ADFE-43C1-4620-AA46-3727080C4E3E}.Debug|x86.ActiveCfg = Debug|Win32
+		{0821ADFE-43C1-4620-AA46-3727080C4E3E}.Debug|x86.Build.0 = Debug|Win32
+		{0821ADFE-43C1-4620-AA46-3727080C4E3E}.Release|x64.ActiveCfg = Release|x64
+		{0821ADFE-43C1-4620-AA46-3727080C4E3E}.Release|x64.Build.0 = Release|x64
+		{0821ADFE-43C1-4620-AA46-3727080C4E3E}.Release|x86.ActiveCfg = Release|Win32
+		{0821ADFE-43C1-4620-AA46-3727080C4E3E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

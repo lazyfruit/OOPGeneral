@@ -122,7 +122,7 @@ istream& operator>>(istream& is, Point& obj)
 	return is;
 }
 
-#define delimiter "\n----------------------------------\n"
+#define razdel "\n----------------------------------\n"
 //#define STRUCT_POINT
 //#define DISTANCE
 //#define CONSTRUCTORS_CHECK
