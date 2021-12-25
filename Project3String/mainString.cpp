@@ -30,22 +30,25 @@ public:
 	//		Constructors:
 	explicit String(int size = 80):size(size)/*Инициализация в заголовке*/, str(new char[size]{})/*Выделение памяти в заголовке*/
 	{
-		/*this->size = size;*/
-		/*this->str = new char[size] {};*/
+		/*this->size = size;*/	//Инициализация
+		/*this->str = new char[size] {};*/	//Выделение памяти
 		cout << "DefaultConstructor:\t" << this << endl;
 	}
-	String(const char* str):size(strlen(str)+1), str(new char[size]{})
+	String(const char* str)/*:size(strlen(str)+1), str(new char[size]{})*/ :String(strlen(str) + 1)/*Делегируем выделение памяти конструктору по умолчанию*/
 	{
-		/*this->size = strlen(str) + 1;*/
-		/*this->str = new char[size] {};*/
-		for (int i = 0; i < size; i++)this->str[i] = str[i];
+		/*this->size = strlen(str) + 1;*/	//Инициализация
+		/*this->str = new char[size] {};*/	//Выделение памяти
+		/*for (int i = 0; i < size; i++)this->str[i] = str[i];*/	//Копирование
+		strcpy(this->str, str);	//strcpy - string copy
+		//Синтаксис: strcpy(dst,src); dst(destination) - строка получатель(в которую копируется),\
+		src(source) - строка источник, из которой копируется содержимое
 		cout << "Constructor:\t\t" << this << endl;
 	}
-	String(const String& other):size(other.size), str(new char[size] {})
+	String(const String& other)/*:size(other.size), str(new char[size] {})*/ :String(other.str)/*Делегируем копирование конструктору с одним параметром*/
 	{
-		/*this->size = other.size;*/
-		/*this->str = new char[size] {};*/
-		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
+		/*this->size = other.size;*/	//Инициализация
+		/*this->str = new char[size] {};*/	//Выделение памяти
+		/*for (int i = 0; i < size; i++)this->str[i] = other.str[i];*/	//Копирование
 		cout << "CopyConstructor:\t" << this << endl;
 	}
 	String(String&& other):size(other.size), str(other.str)
@@ -103,14 +106,17 @@ public:
 String operator+(const String& left, const String& right)
 {
 	String buffer (left.get_size() + right.get_size() - 1);
-	for (int i = 0; i < left.get_size(); i++)
-		//buffer.get_str()[i] = left.get_str()[i];
-		buffer[i] = left[i];
+	//for (int i = 0; i < left.get_size(); i++)
+	//	//buffer.get_str()[i] = left.get_str()[i];
+	//	buffer[i] = left[i];
 	//	  l-value = r-value;
-	for (int i = 0; i < right.get_size(); i++)
-		//buffer.get_str()[i + left.get_size() - 1] = right.get_str()[i];
-		buffer[i + left.get_size() - 1] = right[i];
-
+	//for (int i = 0; i < right.get_size(); i++)
+	//	//buffer.get_str()[i + left.get_size() - 1] = right.get_str()[i];
+	//	buffer[i + left.get_size() - 1] = right[i];
+	strcpy(buffer.get_str(), left.get_str());
+	strcat(buffer.get_str(), right.get_str());	//strcat - выполняет конкатанацию строк
+	//Синтаксис: strcat(dst,src); dst(destination) - строка получатель (в dst будет объединенная строка)\
+	src(source) - строка источник
 	return buffer;
 }
 ostream& operator<<(ostream& os, const String& obj)
