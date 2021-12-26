@@ -33,12 +33,12 @@ public:
 		}
 		cout << "Constructors:\t" << this << endl;
 	}
-	Matrix(int n):Matrix(1, n)
+	Matrix(int n) :Matrix(1, n)
 	{
 		/*this->rows = 1;*/
 		/*this->cols = n;*/
 	}
-	Matrix(const Matrix& other):Matrix(other.rows, other.cols)
+	Matrix(const Matrix& other) :Matrix(other.rows, other.cols)
 	{
 		/*this->rows = other.rows;
 		this->cols = other.cols;*/
@@ -58,13 +58,26 @@ public:
 			delete[] arr[i];
 		}
 		delete[] arr;
+		arr = nullptr;
+		rows = 0;
+		cols = 0;
 		cout << "Destructor:\t" << this << endl;
 	}
 	//		Operators
-	//Matrix& operator=(const Matrix& other)
-	//{
-
-	//}
+	Matrix& operator=(const Matrix& other)
+	{
+		this->~Matrix();
+		this->rows = other.rows;
+		this->cols = other.cols;
+		this->arr = new int* [rows] {};
+		for (int i = 0; i < rows; i++)
+		{
+			this->arr[i] = new int [cols] {};
+			memcpy(this->arr[i], other.arr[i], cols * sizeof(int));
+		}
+		cout << "CopyAssigment:\t" << this << endl;
+		return *this;
+	}
 	const int* operator[](int i)const
 	{
 		return arr[i];
