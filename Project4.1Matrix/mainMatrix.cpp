@@ -2,7 +2,7 @@
 using namespace std;
 using std::cin;
 using std::cout;
-using std::endl;;
+using std::endl;
 
 #define tab "\t"
 #define razdel cout << "\n--------------------------------------------\n" << endl
@@ -23,32 +23,33 @@ public:
 	}
 	//		Constructors
 	Matrix(int rows = 2, int cols = 2)
-	{
-		this->rows;
-		this->cols;
-		this->arr = new int* [rows] {};
-		for (int i = 0; i < rows; i++)
-		{
-			arr[i] = new int [cols] {};
-		}
-		cout << "Constructors:\t" << this << endl;
-	}
+    {
+        this->rows = rows;
+        this->cols = cols;
+        this->arr = new int* [rows] {};
+        for (int i = 0; i < rows; i++)
+        {
+            arr[i] = new int[cols] {};
+        }
+        cout << "Constructor:\t" << this << endl;
+    }
 	Matrix(int n) :Matrix(1, n)
 	{
 		/*this->rows = 1;*/
 		/*this->cols = n;*/
 	}
-	Matrix(const Matrix& other) :Matrix(other.rows, other.cols)
+	Matrix(const Matrix& other)/*:Matrix(other.rows, other.cols)*/
 	{
 		/*this->rows = other.rows;
 		this->cols = other.cols;*/
-		for (int i = 0; i < rows; i++)
+		/*for (int i = 0; i < rows; i++)
 		{
 			for (int j = 0; j < cols; j++)
 			{
 				this->arr[i][j] = other.arr[i][j];
 			}
-		}
+		}*/
+		*this = other;
 		cout << "CopyConstructor:\t" << this << endl;
 	}
 	~Matrix()
@@ -66,6 +67,7 @@ public:
 	//		Operators
 	Matrix& operator=(const Matrix& other)
 	{
+		if (this == &other)return *this;
 		this->~Matrix();
 		this->rows = other.rows;
 		this->cols = other.cols;
@@ -112,8 +114,9 @@ void main()
 			A[i][j] = rand() % 100;
 		}
 	}
+	A = A;
 	A.print();
 	Matrix B;
-	B = A;
+	B = A; //Copy assignment
 	B.print();
 }
