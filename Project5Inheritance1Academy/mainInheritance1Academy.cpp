@@ -182,7 +182,7 @@ public:
 	void print()const
 	{
 		Student::print();
-		cout << "Тема диплома: " << subject << endl;
+		cout << "Тема диплома: " << subject << endl; 
 	}
 };
 
