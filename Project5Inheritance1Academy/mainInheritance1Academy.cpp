@@ -1,4 +1,5 @@
 #include<iostream>
+#include<fstream>
 #include<string>
 using namespace std;
 
@@ -234,8 +235,17 @@ void main()
 	}
 	cout << "\n--------------------------------------------------------\n";
 
+	ofstream fout("Group.txt");
+	for (int i = 0; i < sizeof(group) / sizeof(group [0]); i++)
+	{
+		fout << *group[i] << endl;
+	}
+	fout.close();
+	system("notepad Group.txt");
+
 	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
 		delete[] group[i];
 	}
+	//cout << sizeof(group) / sizeof(Human*) << endl;
 }
