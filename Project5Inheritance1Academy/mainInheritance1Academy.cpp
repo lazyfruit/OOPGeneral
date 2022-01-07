@@ -45,11 +45,19 @@ public:
 		cout << "HDestructor:\t" << this << endl;
 	}
 	//				Methods:
-	virtual void print()const
+	virtual /*void*/ ostream& print(ostream& os)const
 	{
-		cout << last_name << " " << first_name << " " << age << " лет.\n";
+		//cout << last_name << " " << first_name << " " << age << " лет.\n";
+		//os << last_name << " " << first_name << " " << age << " лет.\n";
+		return os << last_name << " " << first_name << ", " << age << " лет,\n";
 	}
 };
+ostream& operator<<(ostream& os, const Human& obj)
+{
+	/*obj.print(os);
+	return os;*/
+	return obj.print(os);
+}
 
 class Student :public Human
 {
@@ -99,12 +107,12 @@ public:
 	}
 
 	//				Methods:
-	void print()const
+	/*void*/ ostream& print(ostream& os)const
 	{
-		Human::print();
-		cout << "Специальность: " << speciality
+		Human::print(os);
+		/*cout*/ return os << "Специальность: " << speciality
 			<< ", группа: " << group
-			<< ", успеваемость: " << rating << endl;
+			<< ", успеваемость: " << rating /*<< endl*/;
 	}
 };
 
@@ -145,10 +153,10 @@ public:
 		cout << "TDestructor:\t" << this << endl;
 	}
 
-	void print()const
+	/*void*/ ostream& print(ostream& os)const
 	{
-		Human::print();
-		cout << "специальность: " << speciality << ", опыт преподавания: " << experience << endl;
+		Human::print(os);
+		/*cout*/ return os << "Специальность: " << speciality << ", опыт преподавания: " << experience /*<< endl*/;
 	}
 };
 
@@ -179,10 +187,10 @@ public:
 		cout << "GDestructor:\t" << this << endl;
 	}
 
-	void print()const
+	/*void*/ ostream& print(ostream& os)const
 	{
-		Student::print();
-		cout << "Тема диплома: " << subject << endl;
+		Student::print(os);
+		/*cout*/ return os << ", тема диплома: " << subject /*<< endl*/;
 	}
 };
 
@@ -221,7 +229,8 @@ void main()
 	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
 		cout << "\n--------------------------------------------------------\n";
-		group[i]->print();
+		//group[i]->print();
+		cout << *group[i] << endl;
 	}
 	cout << "\n--------------------------------------------------------\n";
 
