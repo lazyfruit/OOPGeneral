@@ -1,12 +1,6 @@
-Pinkman Jessie, 22 лет,
-Специальность: Chemistry, группа: WW_01, успеваемость: 93
-Versetti Tommy, 30 лет,
-Специальность: Cryminal, группа: Vice, успеваемость: 90
-White Walter, 50 лет,
-Специальность: Chemistry, опыт преподавания: 25
-Diaz Ricardo, 55 лет,
-Специальность: Weapon distribution, группа: Vice, успеваемость: 80
-Schrader Hank, 42 лет,
-Специальность: Cryminalistic, группа: OBN, успеваемость: 95, тема диплома: How to catch Heisenberg
-Eistein Albert, 143 лет,
-Специальность: Atronomy, опыт преподавания: 120
+class Student  |Pinkman   |Jessie    |22   |Chemistry                |WW_01   |   93%|
+class Student  |Versetti  |Tommy     |30   |Cryminal                 |Vice    |   90%|
+class Teacher  |White     |Walter    |50   |Chemistry                         |   25y|
+class Student  |Diaz      |Ricardo   |55   |Weapon distribution      |Vice    |   80%|
+class Graduate |Schrader  |Hank      |42   |Cryminalistic            |OBN     |   95%|  How to catch Heisenberg
+class Teacher  |Eistein   |Albert    |143  |Atronomy                          |  120y|

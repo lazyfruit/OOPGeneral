@@ -49,8 +49,33 @@ public:
 	virtual /*void*/ ostream& print(ostream& os)const
 	{
 		//cout << last_name << " " << first_name << " " << age << " лет.\n";
-		//os << last_name << " " << first_name << " " << age << " лет.\n";
-		return os << last_name << " " << first_name << ", " << age << " лет,\n";
+		//return os << last_name << " " << first_name << ", " << age << " лет,\n";
+		os.width(10);	//Задает ширину поля, в которое будет выводиться следующее значение (в скобках указывается количество знакопозиций)
+		os << std::left; os << last_name;
+		os.width(10); os << std::left; os << first_name;
+		os.width(5); os << std::left; os << age;
+		return os;
+	}
+	virtual ofstream& print(ofstream& os)const
+	{
+		os.width(15);
+		os << left;
+		os << typeid(*this).name() << "|";
+		os.width(10);	//Задает ширину поля, в которое будет выводиться следующее значение (в скобках указывается количество знакопозиций)
+		os << std::left;
+		os << last_name << "|";
+		os.width(10);
+		os << std::left;
+		os << first_name << "|";
+		os.width(5);
+		os << std::left;
+		os << age << "|";
+		/*os << std::to_string(age) + ",";*/
+		return os;
+	}
+	virtual istream& input(istream& is)
+	{
+		return is >> last_name >> first_name >> age;
 	}
 };
 ostream& operator<<(ostream& os, const Human& obj)
@@ -58,6 +83,14 @@ ostream& operator<<(ostream& os, const Human& obj)
 	/*obj.print(os);
 	return os;*/
 	return obj.print(os);
+}
+ofstream& operator<<(ofstream& os, const Human& obj)
+{
+	return obj.print(os);
+}
+istream& operator>>(istream& is, Human& obj)
+{
+	return obj.input(is);
 }
 
 class Student :public Human
@@ -111,9 +144,27 @@ public:
 	/*void*/ ostream& print(ostream& os)const
 	{
 		Human::print(os);
-		/*cout*/ return os << "Специальность: " << speciality
-			<< ", группа: " << group
-			<< ", успеваемость: " << rating /*<< endl*/;
+		// /*cout*/ return os << "Специальность: " << speciality
+		// << ", группа: " << group
+		// << ", успеваемость: " << rating /*<< endl*/;
+		os.width(25); os << left; os << speciality;
+		os.width(8); os << left; os << group;
+		os.width(5); os << internal; os << rating; os << "%";
+		return os;
+	}
+	ofstream& print(ofstream& os)const
+	{
+		Human::print(os);
+		os.width(25); os << left; os << speciality << "|";
+		os.width(8); os << left; os << group << "|";
+		os.width(5); os << internal; os << rating; os << "%" << "|";
+		return os;
+	}
+	virtual istream& input(istream& is)
+	{
+		Human::input(is);
+		is >> speciality >> group >> rating;
+		return is;
 	}
 };
 
@@ -157,7 +208,17 @@ public:
 	/*void*/ ostream& print(ostream& os)const
 	{
 		Human::print(os);
-		/*cout*/ return os << "Специальность: " << speciality << ", опыт преподавания: " << experience /*<< endl*/;
+		// /*cout*/ return os << "Специальность: " << speciality << ", опыт преподавания: " << experience /*<< endl*/;
+		os.width(33); os << left; os << speciality;
+		os.width(5); os << right; os << experience << "y";
+		return os;
+	}
+	ofstream& print(ofstream& os)const
+	{
+		Human::print(os);
+		os.width(34); os << left; os << speciality << "|";
+		os.width(5); os << right; os << experience << "y" << "|";
+		return os;
 	}
 };
 
@@ -191,11 +252,19 @@ public:
 	/*void*/ ostream& print(ostream& os)const
 	{
 		Student::print(os);
-		/*cout*/ return os << ", тема диплома: " << subject /*<< endl*/;
+		// /*cout*/ return os << ", тема диплома: " << subject /*<< endl*/;
+		return os << left << "  " << subject;
+	}
+	ofstream& print(ofstream& os)const
+	{
+		Student::print(os);
+		os << left << "  " << subject;
+		return os;
 	}
 };
 
 //#define INHERITANCE
+#define OUTPUT_CHECK
 
 void main()
 {
@@ -215,6 +284,7 @@ void main()
 	g.print();
 #endif // INHERITANCE
 
+#ifdef OUTPUT_CHECK
 	//Generalisation:
 	Human* group[] =
 	{
@@ -236,7 +306,7 @@ void main()
 	cout << "\n--------------------------------------------------------\n";
 
 	ofstream fout("Group.txt");
-	for (int i = 0; i < sizeof(group) / sizeof(group [0]); i++)
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		fout << *group[i] << endl;
 	}
@@ -247,5 +317,16 @@ void main()
 	{
 		delete[] group[i];
 	}
-	//cout << sizeof(group) / sizeof(Human*) << endl;
+	//cout << sizeof(group) / sizeof(Human*) << endl;  
+#endif // OUTPUT_CHECK
+
+	/*Human human("last_name", "first_name", 0);
+	cout << "Кто к нам пришел: ";
+	cin >> human;
+	cout << human << endl;*/
+
+	/*Student stud("", "", 0, "", "", 0);
+	cout << "Кто к нам пришел: ";
+	cin >> stud;
+	cout << stud << endl;*/
 }
