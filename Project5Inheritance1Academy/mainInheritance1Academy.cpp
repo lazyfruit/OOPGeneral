@@ -77,6 +77,15 @@ public:
 	{
 		return is >> last_name >> first_name >> age;
 	}
+	virtual ifstream& input(ifstream& is)
+	{
+		std::getline(is, last_name, '|');
+		std::getline(is, first_name, '|');
+		string age_buffer;
+		std::getline(is, age_buffer, '|');
+		this->age = std::stoi(age_buffer);	//stoi() - преобразует строку в число
+		return is;
+	}
 };
 ostream& operator<<(ostream& os, const Human& obj)
 {
@@ -89,6 +98,10 @@ ofstream& operator<<(ofstream& os, const Human& obj)
 	return obj.print(os);
 }
 istream& operator>>(istream& is, Human& obj)
+{
+	return obj.input(is);
+}
+ifstream& operator>>(ifstream& is, Human& obj)
 {
 	return obj.input(is);
 }
@@ -160,10 +173,20 @@ public:
 		os.width(5); os << internal; os << rating; os << "%" << "|";
 		return os;
 	}
-	virtual istream& input(istream& is)
+	istream& input(istream& is)
 	{
 		Human::input(is);
 		is >> speciality >> group >> rating;
+		return is;
+	}
+	ifstream& input(ifstream& is)
+	{
+		Human::input(is);
+		std::getline(is, speciality, '|');
+		std::getline(is, group, '|');
+		string rating_buffer;
+		std::getline(is, rating_buffer, '|');
+		this->rating = std::stod(rating_buffer);	//stod() - преобразует string в double
 		return is;
 	}
 };
@@ -220,6 +243,15 @@ public:
 		os.width(5); os << right; os << experience << "y" << "|";
 		return os;
 	}
+	ifstream& input(ifstream& is)
+	{
+		Human::input(is);
+		std::getline(is, speciality, '|');
+		string exp_buffer;
+		std::getline(is, exp_buffer, '|');
+		experience = std::stod(exp_buffer);
+		return is;
+	}
 };
 
 class Graduate :public Student
@@ -261,10 +293,18 @@ public:
 		os << left << "  " << subject;
 		return os;
 	}
+	ifstream& input(ifstream& is)
+	{
+		Student::input(is);
+		std::getline(is, subject);
+		return is;
+	}
 };
 
-void SaveToFile(const Human* group[], const int size, const string& filename);
+void SaveToFile(/*const*/ Human* group[], const int size, const string& filename);
+void Print(/*const*/ Human* group[], const int size);
 Human** LoadFromFile(const std::string& filename);
+Human* HumanFactory(const std::string& human_type);
 
 //#define INHERITANCE
 //#define OUTPUT_CHECK
@@ -340,10 +380,12 @@ void main()
 	cin >> stud;
 	cout << stud << endl;*/
 
-	LoadFromFile("Group.txt");
+	/*LoadFromFile("Group.txt");*/
+	Human** group = LoadFromFile("Group.txt");
+	Print(group, 6);
 }
 
-void SaveToFile(const Human* group[], const int size, const string& filename)
+void SaveToFile(/*const*/ Human* group[], const int size, const string& filename)
 {
 	ofstream fout(filename);	//ofstream (output file stream)
 	for (int i = 0; i < size; i++)
@@ -353,6 +395,14 @@ void SaveToFile(const Human* group[], const int size, const string& filename)
 	fout.close();
 }
 
+void Print(/*const*/ Human* group[], const int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		cout << *group[i] << endl;
+	}
+}
+
 Human** LoadFromFile(const std::string& filename)
 {
 	ifstream fin(filename);	//ifstream (input file strem)
@@ -360,31 +410,44 @@ Human** LoadFromFile(const std::string& filename)
 	{
 		//1) Вычисляем размер файла:
 		std::string buffer;	//В этот буфер будем читать строки из файла
-		int row_count = 0;	//Количество строк в файле
+		int n = 0;	//Количество строк в файле
 		while (!fin.eof())	//eof (end of file)
 		{
 			std::getline(fin, buffer);
 			cout << fin.tellg() << endl;	//Проверяем действующую позицию курсора
-			row_count++;
+			n++;
 		}
 		//2) Выделяем память под массив группу:
-		Human** Group = new Human * [row_count] {};
+		Human** group = new Human * [n] {};
 		//3) Возвращаем курсор в начало файла для того чтобы заново его прочитать:
 		fin.clear();	//Очищаем поток - сбрасывает позицию курсора (потому что...)
 		fin.seekg(/*0*/ ios::beg, 0);
 		cout << fin.tellg() << endl;	//Проверяем действующую позицию курсора
 		//4) Заново читаем файл и загружаем его содержимое в массив объектов:
-		for (int i = 0; i < row_count; i++)
+		string human_type;
+		for (int i = 0; i<n; i++)
 		{
-			std::getline(fin, buffer);
-			cout << buffer << endl;
+			std::getline(fin, human_type, '|');
+			/*cout << buffer << endl;*/
+			group[i] = HumanFactory(human_type);
+			fin >> *group[i];
+			cout << *group[i];	//Проверка у Кати
 		}
-
 		fin.close();
+		return group;
 	}
 	else
 	{
 		cerr << "Error: File not found!" << endl;
 	}
 	return nullptr;	//Если файл прочитать не удалось, возвращаем указатель на 0
+}
+
+Human* HumanFactory(const std::string& human_type)	//Пораждающий паттерн проектирования - Фабрика (если нужно создавать много разных объектов
+													//которые являются подтипами какого-то типа
+{
+	if (human_type.find("class Student") != string::npos)return new Student("last_name", "first_name", 0, "spec", "group", 0);
+	if (human_type.find("class Graduate") != string::npos)return new Graduate("last_name", "first_name", 0, "spec", "group", 0, "subject");
+	if (human_type.find("class Teacher") != string::npos)return new Teacher("last_name", "first_name", 0, "spec", 0);
+	return nullptr;
 }

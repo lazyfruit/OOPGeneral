@@ -141,6 +141,9 @@
   <ItemGroup>
     <ClCompile Include="mainInheritance1Academy.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="group.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
