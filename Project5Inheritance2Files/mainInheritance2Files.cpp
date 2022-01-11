@@ -1,4 +1,4 @@
-#include<iostream>
+ï»¿#include<iostream>
 #include<fstream>
 using namespace std;
 
@@ -11,7 +11,7 @@ void main()
 #ifdef WRITE_TO_FILE
 	//cout << "Hello World" << endl;
 
-	ofstream fout("File.txt", std::ios_base::app/*append*/);	//Ñîçäàåì è îòêðûâàåì ïîòîê
+	ofstream fout("File.txt", std::ios_base::app/*append*/);	//Ð¡Ð¾Ð·Ð´Ð°ÐµÐ¼ Ð¸ Ð¾Ñ‚ÐºÑ€Ñ‹Ð²Ð°ÐµÐ¼ Ð¿Ð¾Ñ‚Ð¾Ðº
 	fout << "Hello World" << endl;
 	fout.close();
 
@@ -24,7 +24,7 @@ void main()
 	ifstream fin("File.txt");
 	if (fin.is_open())
 	{
-		while (!fin.eof())	//Ïîêà íå end of file
+		while (!fin.eof())	//ÐŸÐ¾ÐºÐ° Ð½Ðµ end of file
 		{
 			fin >> buffer;
 			fin.getline(buffer, SIZE);
