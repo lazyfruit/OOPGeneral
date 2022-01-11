@@ -1,7 +1,11 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<iomanip>	//???
 using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
 
 class Human
 {
@@ -106,198 +110,74 @@ ifstream& operator>>(ifstream& is, Human& obj)
 	return obj.input(is);
 }
 
-class Student :public Human
+class Employee :public Human
 {
-	string speciality;
-	string group;
-	double rating;
+	std::string position;	//Занимаемая должность
 public:
-	const string& get_speciality()const
+	const std::string& get_position()const
 	{
-		return speciality;
+		return position;
 	}
-	const string& get_group()const
+	void set_posotion(const std::string& position)
 	{
-		return group;
+		this->position = position;
 	}
-	double get_rating()const
+	Employee(const string& last_name, const string& first_name, unsigned int age,
+		const std::string& position) :Human(last_name, first_name, age)
 	{
-		return rating;
+		this->position = position;
+		cout << "EConstructor:\t" << this << endl;
 	}
-	void set_speciality(const string& speciality)
+	~Employee()
 	{
-		this->speciality = speciality;
+		cout << "EDestructor:\t" << this << endl;
 	}
-	void set_group(const string& group)
+	virtual double count_salary()const
 	{
-		this->group = group;
-	}
-	void set_rating(double rating)
-	{
-		this->rating = rating;
-	}
-	//				Constructors:
-	Student
-	(
-		const string& last_name, const string& first_name, unsigned int age,
-		const string& speciality, const string& group, double rating
-	) :Human(last_name, first_name, age)	//Делегируем конструктор базового класса
-	{
-		set_speciality(speciality);
-		set_group(group);
-		set_rating(rating);
-		cout << "SConstructor:\t" << this << endl;
-	}
-	~Student()
-	{
-		cout << "SDestructor:\t" << this << endl;
-	}
-
-	//				Methods:
-	/*void*/ ostream& print(ostream& os)const
-	{
-		Human::print(os);
-		// /*cout*/ return os << "Специальность: " << speciality
-		// << ", группа: " << group
-		// << ", успеваемость: " << rating /*<< endl*/;
-		os.width(25); os << left; os << speciality;
-		os.width(8); os << left; os << group;
-		os.width(5); os << internal; os << rating; os << "%";
-		return os;
-	}
-	ofstream& print(ofstream& os)const
-	{
-		Human::print(os);
-		os.width(25); os << left; os << speciality << "|";
-		os.width(8); os << left; os << group << "|";
-		os.width(5); os << internal; os << rating; os << "%" << "|";
-		return os;
-	}
-	istream& input(istream& is)
-	{
-		Human::input(is);
-		is >> speciality >> group >> rating;
-		return is;
-	}
-	ifstream& input(ifstream& is)
-	{
-		Human::input(is);
-		std::getline(is, speciality, '|');
-		std::getline(is, group, '|');
-		string rating_buffer;
-		std::getline(is, rating_buffer, '|');
-		this->rating = std::stod(rating_buffer);	//stod() - преобразует string в double
-		return is;
+		return 0;
 	}
 };
 
-class Teacher :public Human
+class ResidentEmployee :public Employee
 {
-	string speciality;
-	unsigned int experience;
+	double salary;
 public:
-	const string& get_speciality()const
+	ResidentEmployee(const string& last_name, const string& first_name, unsigned int age,
+		const std::string& position,
+		double salary):Employee(last_name, first_name, age, position)
 	{
-		return speciality;
+		this->salary = salary;
+		cout << "RConstructor;\t" << this << endl;
 	}
-	unsigned int get_experience()const
+	~ResidentEmployee()
 	{
-		return experience;
+		cout << "RDestructor:\t" << this << endl;
 	}
-	void set_speciality(const string& speciality)
+	double count_salary()const
 	{
-		this->speciality = speciality;
-	}
-	void set_experience(unsigned int experience)
-	{
-		this->experience = experience;
-	}
-	//					Constructors:
-	Teacher
-	(
-		const string& last_name, const string& first_name, unsigned int age,
-		const string& speciality, unsigned int experience
-	) :Human(last_name, first_name, age)
-	{
-		set_speciality(speciality);
-		set_experience(experience);
-		cout << "TConstructor:\t" << this << endl;
-	}
-	~Teacher()
-	{
-		cout << "TDestructor:\t" << this << endl;
-	}
-
-	/*void*/ ostream& print(ostream& os)const
-	{
-		Human::print(os);
-		// /*cout*/ return os << "Специальность: " << speciality << ", опыт преподавания: " << experience /*<< endl*/;
-		os.width(33); os << left; os << speciality;
-		os.width(5); os << right; os << experience << "y";
-		return os;
-	}
-	ofstream& print(ofstream& os)const
-	{
-		Human::print(os);
-		os.width(34); os << left; os << speciality << "|";
-		os.width(5); os << right; os << experience << "y" << "|";
-		return os;
-	}
-	ifstream& input(ifstream& is)
-	{
-		Human::input(is);
-		std::getline(is, speciality, '|');
-		string exp_buffer;
-		std::getline(is, exp_buffer, '|');
-		experience = std::stod(exp_buffer);
-		return is;
+		return salary;
 	}
 };
 
-class Graduate :public Student
+class HourEmployee :public Employee
 {
-	string subject;
+	double rate;	//Ставка за час
+	int complete_hour;	//Количество отработанных часов
 public:
-	const string& get_subject()const
+	HourEmployee(const string& last_name, const string& first_name, unsigned int age,
+		const std::string& position,
+		double rate,
+		int complete_hour) :Employee(last_name, first_name, age, position), rate(rate), complete_hour(complete_hour)
 	{
-		return subject;
+		cout << "HEConstructor;\t" << this << endl;
 	}
-	void set_subject(const string& subject)
+	~HourEmployee()
 	{
-		this->subject = subject;
+		cout << "HEDestructor;\t" << this << endl;
 	}
-	Graduate
-	(
-		const string& last_name, const string& first_name, unsigned int age,
-		const string& speciality, const string& group, double rating,
-		const string& subject
-	) :Student(last_name, first_name, age, speciality, group, rating)
+	double count_salary()const
 	{
-		set_subject(subject);
-		cout << "GConstructor:\t" << this << endl;
-	}
-	~Graduate()
-	{
-		cout << "GDestructor:\t" << this << endl;
-	}
-
-	/*void*/ ostream& print(ostream& os)const
-	{
-		Student::print(os);
-		// /*cout*/ return os << ", тема диплома: " << subject /*<< endl*/;
-		return os << left << "  " << subject;
-	}
-	ofstream& print(ofstream& os)const
-	{
-		Student::print(os);
-		os << left << "  " << subject;
-		return os;
-	}
-	ifstream& input(ifstream& is)
-	{
-		Student::input(is);
-		std::getline(is, subject);
-		return is;
+		return rate * complete_hour;
 	}
 };
 
@@ -306,28 +186,34 @@ void Print(/*const*/ Human* group[], const int size);
 Human** LoadFromFile(const std::string& filename);
 Human* HumanFactory(const std::string& human_type);
 
-//#define INHERITANCE
-//#define OUTPUT_CHECK
+//#define OLD_CODE
 
 void main()
 {
 	setlocale(LC_ALL, "");
 
-#ifdef INHERITANCE
-	Human h("Montana", "Antonio", 35);
-	h.print();
+	Employee* department[] =
+	{
+		new HourEmployee("Pinkman", "Jessie", 22, "Helper", 1000, 20),
+		new HourEmployee("Versetti", "Tommy", 30, "Killer", 5000, 10),
+		new ResidentEmployee("White", "Walter", 50, "Chemist", 150000),
+		new ResidentEmployee("Diaz", "Ricardo", 55, "Director", 825000),
+		new ResidentEmployee("Schrader", "Hank", 42, "Detective", 10000),
+		new HourEmployee("Eistein", "Albert", 143, "Researcher", 3000, 15)
+	};
+	double total_money = 0;
+	for (int i = 0; i < sizeof(department) / sizeof(department[0]); i++)
+	{
+		cout << *department[i] << "salary: " << department[i]->count_salary() << endl;
+		total_money += department[i]->count_salary();
+	}
+	cout << "Total money: " << setprecision(15) << total_money << " USD" << endl;	//setprecision(15) - определяет точность выведения 15 знаков
+	for (int i = 0; i < sizeof(department) / sizeof(department[0]); i++)
+	{
+		delete department[i];
+	}
 
-	Student s("Pinkman", "Jessie", 22, "Chemistry", "WW_01", 93);
-	s.print();
-
-	Teacher t("White", "Walter", 50, "Chemistry", 25);
-	t.print();
-
-	Graduate g("Schrader", "Hank", 42, "Cryminalistic", "OBN", 95, "How to catch Heisenberg");
-	g.print();
-#endif // INHERITANCE
-
-#ifdef OUTPUT_CHECK
+#ifdef OLD_CODE
 	//Generalisation:
 	const Human* group[] =
 	{
@@ -357,7 +243,7 @@ void main()
 	system("notepad Group.txt");*/
 	string filename = "Group.txt";
 	SaveToFile(group, sizeof(group) / sizeof(group[0]), "Group.txt");
-	system((string("notepad ")+ filename).c_str());
+	system((string("notepad ") + filename).c_str());
 	//1. string("notepad ") - преобразуем строковую константу "notepad " в объект класса std::string
 	//2. streng("nitepad ") + filename - выполняем конкатенацию двух объектов класса std::string
 	//3. (std::string).c_str() - метод c_str() возвращает содержимое объекта std::string\
@@ -367,8 +253,7 @@ void main()
 	{
 		delete[] group[i];
 	}
-	//cout << sizeof(group) / sizeof(Human*) << endl;  
-#endif // OUTPUT_CHECK
+	//cout << sizeof(group) / sizeof(Human*) << endl;
 
 	/*Human human("last_name", "first_name", 0);
 	cout << "Кто к нам пришел: ";
@@ -383,8 +268,10 @@ void main()
 	/*LoadFromFile("Group.txt");*/
 	Human** group = LoadFromFile("Group.txt");
 	Print(group, 6);
+#endif // OLD_CODE
 }
 
+#ifdef OLD_CODE
 void SaveToFile(/*const*/ Human* group[], const int size, const string& filename)
 {
 	ofstream fout(filename);	//ofstream (output file stream)
@@ -394,7 +281,6 @@ void SaveToFile(/*const*/ Human* group[], const int size, const string& filename
 	}
 	fout.close();
 }
-
 void Print(/*const*/ Human* group[], const int size)
 {
 	for (int i = 0; i < size; i++)
@@ -402,7 +288,6 @@ void Print(/*const*/ Human* group[], const int size)
 		cout << *group[i] << endl;
 	}
 }
-
 Human** LoadFromFile(const std::string& filename)
 {
 	ifstream fin(filename);	//ifstream (input file strem)
@@ -425,7 +310,7 @@ Human** LoadFromFile(const std::string& filename)
 		cout << fin.tellg() << endl;	//Проверяем действующую позицию курсора
 		//4) Заново читаем файл и загружаем его содержимое в массив объектов:
 		string human_type;
-		for (int i = 0; i<n; i++)
+		for (int i = 0; i < n; i++)
 		{
 			std::getline(fin, human_type, '|');
 			/*cout << buffer << endl;*/
@@ -442,7 +327,6 @@ Human** LoadFromFile(const std::string& filename)
 	}
 	return nullptr;	//Если файл прочитать не удалось, возвращаем указатель на 0
 }
-
 Human* HumanFactory(const std::string& human_type)	//Пораждающий паттерн проектирования - Фабрика (если нужно создавать много разных объектов
 													//которые являются подтипами какого-то типа
 {
@@ -451,3 +335,4 @@ Human* HumanFactory(const std::string& human_type)	//Пораждающий паттерн проекти
 	if (human_type.find("class Teacher") != string::npos)return new Teacher("last_name", "first_name", 0, "spec", 0);
 	return nullptr;
 }
+#endif // OLD_CODE
