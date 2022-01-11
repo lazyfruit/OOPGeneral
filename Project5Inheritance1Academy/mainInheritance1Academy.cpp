@@ -132,10 +132,7 @@ public:
 	{
 		cout << "EDestructor:\t" << this << endl;
 	}
-	virtual double count_salary()const
-	{
-		return 0;
-	}
+	virtual double count_salary()const = 0;
 };
 
 class ResidentEmployee :public Employee
