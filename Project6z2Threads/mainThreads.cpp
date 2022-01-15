@@ -53,13 +53,15 @@ void main()
 	setlocale(LC_ALL, "");
 
 	cout << "Для начала работы программы нажмите \"Enter\". Для завершения повторно нажмите \"Enter\"." << endl; cin.get();
+	//Вывод в поток
 	std::thread hello_thread(Hello);
 	std::thread world_thread(World);
 	std::thread goodbye_thread(Goodbye);
 	std::thread dream_thread(Dream);
 
-	cin.get(); finish = true;
+	cin.get(); finish = true;//Условие выхода из потока
 
+	//Высвобождение потока
 	world_thread.join();
 	hello_thread.join();
 	goodbye_thread.join();

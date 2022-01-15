@@ -1,6 +1,7 @@
 #include<iostream>
 #include<conio.h>
 #include<Windows.h>
+#include<thread>
 //#include<string>
 using namespace std;
 using std::cin;
@@ -204,6 +205,7 @@ namespace Geometry	//Пространство имен "Geometry"
 		}
 		void draw()const
 		{
+			//GDI (Graphics Device Interface) - Интерфейс графического устройства
 			//1. Получаем окно консоли:
 			HWND hwnd = GetConsoleWindow(); 
 			//HWND hwnd = FindWindow(NULL, L"Inheritance - Microsoft Visual Studio");
@@ -226,6 +228,13 @@ namespace Geometry	//Пространство имен "Geometry"
 			DeleteObject(hPen);
 			//?. Все контексты устройств нужно удалять, чтобы освободить занимаемые ими ресурсы:
 			ReleaseDC(hwnd, hdc);
+		}
+		void start_draw()const
+		{
+			while (!true)
+			{
+				draw();
+			}
 		}
 	};
 
@@ -289,6 +298,13 @@ namespace Geometry	//Пространство имен "Geometry"
 			DeleteObject(hPen);
 			ReleaseDC(hwnd, hdc);
 		}
+		void start_draw()const
+		{
+			while (!true)
+			{
+				draw();
+			}
+		}
 		EquilateralTriangle(double side, 
 			Color color = Color::white, unsigned int width = 5, unsigned int start_x = 100, unsigned int start_y = 100)
 			:Triangle(color, width, start_x, start_y)
@@ -342,11 +358,12 @@ void main()
 	cout << rect1.get_area() << endl;
 	cout << rect1.get_perimeter() << endl;
 	key = 0;
-	while (key != ' ')
-	{
-		rect1.draw();
-		if (_kbhit())key = _getch();//Отслеживает нажатие клавиши
-	}
+	//while (key != ' ')
+	//{
+	//	rect1.draw();
+	//	if (_kbhit())key = _getch();//Отслеживает нажатие клавиши
+	//}
+	std::thread rect1_thread(&Geometry::Rectangle::start_draw, rect1);//Вывод прямоугольника в потоке
 	cout << "Для продолжения нажмите \"Enter\"" << endl; cin.get();
 	cout << line << endl;
 #endif // RECTANGLE
@@ -357,13 +374,18 @@ void main()
 	cout << et.get_area() << endl;
 	cout << et.get_perimeter() << endl;
 	key = 0;
-	while (key != ' ')
+	/*while (key != ' ')
 	{
 		et.draw();
 		if (_kbhit())key = _getch();
-	}
+	}*/
+	std::thread et_thread(&Geometry::EquilateralTriangle::start_draw, et);//Вывод треугольника в потоке
 	cout << "Для продолжения нажмите \"Enter\"" << endl; cin.get();
 	cout << line << endl;
 #endif // TRIANGLE
 
+	cin.get();
+	rect1_thread.join();
+	et_thread.join();
+	//Реализация генерации фигур через функцию схожую с HumanFactory
 }
