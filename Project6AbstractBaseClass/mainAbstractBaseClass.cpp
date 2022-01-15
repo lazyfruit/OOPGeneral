@@ -32,7 +32,7 @@ class Bike :public GroundVehicle		//Мотоциклы
 //Конкретный класс, поскольку он определяет чисто виртуальный метод move
 {
 public:
-	void move()
+	void move()const
 	{
 		cout << "Мотоцикл ездит на двух колесах." << endl;
 	}
@@ -41,7 +41,7 @@ public:
 class Car :public GroundVehicle
 {
 public:
-	void move()
+	void move()const
 	{
 		cout << "Машина едет на 4 колесах" << endl;
 	}
@@ -49,7 +49,7 @@ public:
 
 class Boat :public WaterVehicle
 {
-	void move() const
+	void move()const
 	{
 		cout << "Лодка плывет." << endl;
 	}
@@ -59,8 +59,8 @@ void main()
 {
 	setlocale(LC_ALL, "");
 	
-	Vehicle V;			//Невозможно создать экземпляр абстрактного класса
-	GroundVehicle GV;	//Этот класс так же является абстрактным, поскольку он не определяет метод move
+	//Vehicle V;			//Невозможно создать экземпляр абстрактного класса
+	//GroundVehicle GV;	//Этот класс так же является абстрактным, поскольку он не определяет метод move
 	Bike HD;
 	HD.move();
 	Car BMW;
