@@ -52,7 +52,7 @@ namespace Geometry	//Пространство имен "Geometry"
 	//	"7F"
 	//};
 
-	class Shape
+	class Shape//Фигура
 	{
 	protected:
 		//Цвет
@@ -103,14 +103,14 @@ namespace Geometry	//Пространство имен "Geometry"
 			cout << "ShDestructor:\t" << this << endl;
 		}
 
-		virtual double get_area()const = 0;
-		virtual double get_perimeter()const = 0;
-		virtual void draw()const = 0;
+		virtual double get_area()const = 0;//Площадь
+		virtual double get_perimeter()const = 0;//Периметр
+		virtual void draw()const = 0;//Отрисовка
 	};
 
-	class Square :public Shape
+	class Square :public Shape//Квадрат
 	{
-		double side;
+		double side;//Сторона
 	public:
 		double get_side(double side)
 		{
@@ -160,10 +160,10 @@ namespace Geometry	//Пространство имен "Geometry"
 		}
 	};
 
-	class Rectangle :public Shape
+	class Rectangle :public Shape//Прямоугольник
 	{
-		double side1;
-		double side2;
+		double side1;//Сторона а
+		double side2;//Сторона в
 	public:
 		double get_side1()const
 		{
@@ -238,7 +238,7 @@ namespace Geometry	//Пространство имен "Geometry"
 		}
 	};
 
-	class Triangle :public Shape
+	class Triangle :public Shape//Треугольник
 	{//Задаем класс абстрактным, поскольку существуют разные типы треугольника
 	public:
 		Triangle(Color color, unsigned int width, unsigned int start_x, unsigned int start_y)
@@ -252,7 +252,7 @@ namespace Geometry	//Пространство имен "Geometry"
 		}
 		virtual double get_height()const = 0;	//Но мы знаем что у всех треугольников есть высота
 	};
-	class EquilateralTriangle :public Triangle
+	class EquilateralTriangle :public Triangle//Равностороннний треугольник
 	{
 		double side;
 	public:
@@ -317,12 +317,212 @@ namespace Geometry	//Пространство имен "Geometry"
 			cout << "ETDestructor:\t" << this << endl;
 		}
 	};
+	class IsoscalesTriangle :public Triangle //Равнобедренный треугольник
+	{
+		double side;//Сторона треугольника
+		double bottom;//Основание треугольника
+	public:
+		double get_side()const
+		{
+			return side;
+		}
+		double get_bottom()const
+		{
+			return bottom;
+		}
+		double get_height()const
+		{
+			return sqrt(pow(side, 2) - pow(bottom / 4, 2));
+		}
+		void set_side(double side)
+		{
+			this->side = side;
+		}
+		void set_bottom(double bottom)
+		{
+			this->bottom = bottom;
+		}
+		IsoscalesTriangle
+		(
+			double side, double bottom, Color color, unsigned int width, unsigned int start_x, unsigned int start_y
+		) : Triangle(color, width, start_x, start_y)
+		{
+			set_side(side);
+			set_bottom(bottom);
+		}
+		double get_area()const
+		{
+			return bottom / 2 * sqrt(pow(side, 2) - pow(bottom / 4, 2));
+		}
+		double get_perimeter()const
+		{
+			return 2 * side + bottom;
+		}
+		void draw()const
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+			HPEN hPen = CreatePen(PS_SOLID, width, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			const POINT points[] =
+			{
+				{start_x, start_y + this->get_height()},
+				{start_x + this->get_bottom(), start_y + this->get_height()},
+				{start_x + this->get_bottom() / 2, start_y}
+			};
+			::Polygon(hdc, points, sizeof(points) / sizeof(POINT));
+
+			DeleteObject(hPen);
+			DeleteObject(hBrush);
+			ReleaseDC(hwnd, hdc);
+		}
+		void start_draw()const
+		{
+			while (!true)
+			{
+				draw();
+			}
+		}
+	};
+
+	class RightTriangle :public Triangle//Прямоугольный треугольник
+	{
+		double bottom;
+		double side;
+	public:
+		double get_bottom()const
+		{
+			return bottom;
+		}
+		double get_side()const
+		{
+			return side;
+		}
+		double get_height()const
+		{
+			return sqrt(pow(side, 2) - pow(bottom, 2));
+		}
+		void set_bottom(double bottom)
+		{
+			this->bottom = bottom;
+		}
+		void set_side(double side)
+		{
+			this->side = side;
+		}
+		RightTriangle
+		(
+			double bottom, double side, Color color, unsigned int width, unsigned int start_x, unsigned int start_y
+		) : Triangle(color, width, start_x, start_y)
+		{
+			set_bottom(bottom);
+			set_side(side);
+		}
+		double get_area()const
+		{
+			return (bottom * get_height()) / 2;
+		}
+		double get_perimeter()const
+		{
+			return side + bottom + get_height();
+		}
+		void draw()const
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+			HPEN hPen = CreatePen(PS_SOLID, width, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
+
+			const POINT points[] =
+			{
+				{start_x, start_y},
+				{start_x, start_y + this->get_height()},
+				{start_x + this->get_bottom(), start_y + this->get_height()}
+			};
+			::Polygon(hdc, points, sizeof(points) / sizeof(POINT));
+
+			DeleteObject(hPen);
+			DeleteObject(hBrush);
+			ReleaseDC(hwnd, hdc);
+		}
+		void start_draw()const
+		{
+			while (!true)
+			{
+				draw();
+			}
+		}
+	};
+
+	class Circle :public Shape//Круг
+	{
+		double radius;//Радиус
+	public:
+		double get_radius()const
+		{
+			return radius;
+		}
+		void set_radius(double radius)
+		{
+			if (radius <= 0)radius = 1;
+			this->radius = radius;
+		}
+		Circle(double radius, Color color, unsigned int width = 5, unsigned int start_x = 100,
+			unsigned int start_y = 100) :Shape(color, width, start_x, start_y)
+		{
+			set_radius(radius);
+			cout << "CircConstructor: " << this << endl;
+		}
+		~Circle()
+		{
+			cout << "CircDestructor: " << this << endl;
+		}
+
+		double get_area()const
+		{
+			return (22 / 7) * pow(radius, 2);
+		}
+		double get_perimeter()const
+		{
+			return 2 * radius * (22 / 7);
+		}
+		void draw()const
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+			HPEN hPen = CreatePen(PS_SOLID, 5, color);
+			SelectObject(hdc, hPen);
+			HBRUSH hBrush = CreateSolidBrush(color);
+			SelectObject(hdc, hBrush);
+			for (int i = 0; i < 25; cout << endl, i++); Sleep(200);
+
+			::Ellipse(hdc, start_x, start_y, start_x + radius * 50, start_y + radius * 50);
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+			ReleaseDC(hwnd, hdc);
+		}
+		void start_draw()const
+		{
+			while (!true)
+			{
+				draw();
+			}
+		}
+	};
 }
 
 //#define FULLSCREEN_CONSOLE
 //#define SQUARE
 #define RECTANGLE
 #define TRIANGLE
+#define EQUILATERALTRIANGLE
+#define ISOSCALESTRIANGLE
+#define RIGHTTRIANGLE
+#define CIRCLE
 
 //CONSOLE_SCREEN_BUFFER_INFO
 
@@ -337,10 +537,8 @@ void main()
 	SetConsoleDisplayMode(hConsole, CONSOLE_FULLSCREEN, &buffer);
 #endif // FULLSCREEN_CONSOLE
 
-
-	//Shape shape;
 #ifdef SQUARE
-		Geometry::Square square(5, Geometry::Color::red);
+		Geometry::Square square(5, Geometry::Color::console_gray);
 	cout << "\n" << mintab << "Рисуем квадрат" << endl;
 	cout << "Площадь квадрата: " << square.get_area() << endl;
 	cout << "Периметр квадрата: " << square.get_perimeter() << "\n" << endl;
@@ -353,7 +551,7 @@ void main()
 	char key;
 
 #ifdef RECTANGLE
-	Geometry::Rectangle rect1(50, 70, Geometry::Color::yellow, 5, 200, 100);
+	Geometry::Rectangle rect1(50, 70, Geometry::Color::console_blue, 5, 200, 100);
 	cout << "\n" << mintab << "Рисуем прямоугольник" << endl;
 	cout << rect1.get_area() << endl;
 	cout << rect1.get_perimeter() << endl;
@@ -369,12 +567,14 @@ void main()
 #endif // RECTANGLE
 
 #ifdef TRIANGLE
-	Geometry::EquilateralTriangle et(50, Geometry::Color::green, 5, 100, 100);
-	cout << et.get_height() << endl;
-	cout << et.get_area() << endl;
-	cout << et.get_perimeter() << endl;
-	key = 0;
-	/*while (key != ' ')
+#ifdef EQUILATERALTRIANGLE
+	Geometry::EquilateralTriangle et(50, Geometry::Color::console_green, 5, 100, 100);
+	cout << "\n" << mintab << "Рисуем равносторонний треугольник" << endl;
+	cout << "Высота: " << et.get_height() << endl;
+	cout << "Площадь треугольника: " << et.get_area() << endl;
+	cout << "Периметр треугольника: " << et.get_perimeter() << endl;
+	/*key = 0;
+	while (key != ' ')
 	{
 		et.draw();
 		if (_kbhit())key = _getch();
@@ -382,10 +582,45 @@ void main()
 	std::thread et_thread(&Geometry::EquilateralTriangle::start_draw, et);//Вывод треугольника в потоке
 	cout << "Для продолжения нажмите \"Enter\"" << endl; cin.get();
 	cout << line << endl;
+#endif // EQUILATERALTRIANGLE
+	
+#ifdef ISOSCALESTRIANGLE
+	Geometry::IsoscalesTriangle it(200, 200, Geometry::Color::console_red, 5, 50, 200);
+	cout << "\n" << mintab << "Рисуем равнобедренный треугольник" << endl;
+	cout << "Высота: " << it.get_height() << endl;
+	cout << "Площадь треугольника: " << it.get_area() << endl;
+	cout << "Периметр треугольника: " << it.get_perimeter() << endl;
+	std::thread it_thread(&Geometry::IsoscalesTriangle::start_draw, it);
+	cout << "Для продолжения нажмите \"Enter\"" << endl; cin.get();
+	cout << line << endl;
+#endif // ISOSCALESTRIANGLE
+
+#ifdef RIGHTTRIANGLE
+	Geometry::RightTriangle rt(200, 300, Geometry::Color::console_white, 5, 503, 200);
+	cout << "\n" << mintab << "Рисуем прямоугольный треугольник" << endl;
+	cout << "Высота: " << rt.get_height() << endl;
+	cout << "Площадь треугольника: " << rt.get_area() << endl;
+	cout << "Периметр треугольника: " << rt.get_perimeter() << endl;
+	std::thread rt_thread(&Geometry::RightTriangle::start_draw, rt);
+	cout << "Для продолжения нажмите \"Enter\"" << endl; cin.get();
+	cout << line << endl;
+#endif // RIGHTTRIANGLE
 #endif // TRIANGLE
 
+#ifdef CIRCLE
+	Geometry::Circle circle(5, Geometry::Color::console_blue);
+	cout << "\n" << mintab << "Рисуем круг" << endl;
+	cout << "Площадь круга: " << circle.get_area() << endl;
+	cout << "Периметр круга: " << circle.get_perimeter() << endl;
+	//circle.draw();
+	std::thread circle_thread(&Geometry::Circle::start_draw, circle);
+#endif // CIRCLE
+
 	cin.get();
-	rect1_thread.join();
+	rect1_thread.join();//Закрывает поток
 	et_thread.join();
+	it_thread.join();
+	rt_thread.join();
+	circle_thread.join();
 	//Реализация генерации фигур через функцию схожую с HumanFactory
 }
