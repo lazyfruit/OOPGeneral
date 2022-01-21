@@ -1,0 +1,10 @@
+class ResidentEmployee   |Strelcov       |Sergay    |51        |                    30600RUB|
+class ResidentEmployee   |Prisyazhnyy    |Pablo     |37        |                    28500RUB|
+class ResidentEmployee   |Frolov         |Stepan    |35        |                    27000RUB|
+class ResidentEmployee   |Detistova      |Ludmila   |61        |                    27000RUB|
+class ResidentEmployee   |Kirillova      |Nasty     |32        |                    26000RUB|
+class ResidentEmployee   |Kazakov        |Oleg      |37        |                    26000RUB|
+class ResidentEmployee   |Ivanov         |Alex      |30        |                    25000RUB|
+class HourEmployee       |Shishkin       |Alex      |27        |       132RUB|       192hour|
+class HourEmployee       |Korolev        |Stas      |35        |       150RUB|       192hour|
+class HourEmployee       |Pishin         |Vadim     |39        |       148RUB|       192hour|

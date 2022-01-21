@@ -58,18 +58,10 @@ public:
 	}
 	virtual ofstream& print(ofstream& os)const
 	{
-		os.width(15);
-		os << left;
-		os << typeid(*this).name() << "|";
-		os.width(10);	//Задает ширину поля, в которое будет выводиться следующее значение (в скобках указывается количество знакопозиций)
-		os << std::left;
-		os << last_name << "|";
-		os.width(10);
-		os << std::left;
-		os << first_name << "|";
-		os.width(5);
-		os << std::left;
-		os << age << "|";
+		os.width(15); os << left; os << typeid(*this).name() << "|";
+		os.width(10); os << std::left; os << last_name << "|";
+		os.width(10); os << std::left;os << first_name << "|";
+		os.width(5); os << std::left;os << age << "|";
 		/*os << std::to_string(age) + ",";*/
 		return os;
 	}

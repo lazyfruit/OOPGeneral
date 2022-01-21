@@ -37,43 +37,39 @@ public:
 	{
 		this->age = age;
 	}
-	//					Constructors:
+	//		Constructors:
 	Human(const string& last_name, const string& first_name, unsigned int age)
 	{
 		set_last_name(last_name);//Инициализация в теле конструктора
 		set_first_name(first_name);
 		set_age(age);
+#ifdef DEBUG
 		cout << "HConstructor:\t" << this << endl;
+#endif // DEBUG
+
 	}
 	virtual ~Human()
 	{
+#ifdef DEBUG
 		cout << "HDestructor:\t" << this << endl;
+#endif // DEBUG
 	}
-	//				Methods:
-	virtual /*void*/ ostream& print(ostream& os)const
+	//		Methods:
+	virtual ostream& print(ostream& os)const
 	{
-		//cout << last_name << " " << first_name << " " << age << " лет.\n";
-		//return os << last_name << " " << first_name << ", " << age << " лет,\n";
-		os.width(10);	//Задает ширину поля, в которое будет выводиться следующее значение (в скобках указывается количество знакопозиций)
-		os << std::left; os << last_name;
+		os.width(25);//Задает ширину поля, в которое будет выводиться следующее значение (в скобках указывается количество знакопозиций)
+		os << left; os << typeid(*this).name();
+		os.width(15); os << std::left; os << last_name;
 		os.width(10); os << std::left; os << first_name;
-		os.width(5); os << std::left; os << age;
+		os.width(10); os << std::left; os << age;
 		return os;
 	}
 	virtual ofstream& print(ofstream& os)const
 	{
-		os.width(20);
-		os << left;
-		os << typeid(*this).name() << "|";
-		os.width(15);	//Задает ширину поля, в которое будет выводиться следующее значение (в скобках указывается количество знакопозиций)
-		os << std::left;
-		os << last_name << "|";
-		os.width(10);
-		os << std::left;
-		os << first_name << "|";
-		os.width(5);
-		os << std::left;
-		os << age << "|";
+		os.width(25); os << left; os << typeid(*this).name() << "|";
+		os.width(15); os << std::left; os << last_name << "|";
+		os.width(10); os << std::left; os << first_name << "|";
+		os.width(10); os << std::left; os << age << "|";
 		/*os << std::to_string(age) + ",";*/
 		return os;
 	}
@@ -87,15 +83,13 @@ public:
 		std::getline(is, first_name, '|');
 		string age_buffer;
 		std::getline(is, age_buffer, '|');
-		this->age = std::stoi(age_buffer);	//stoi() - преобразует строку в число
+		this->age = std::stoi(age_buffer);	//stoi() - преобразует строку в int
 		return is;
 	}
 };
-
+//		Operators
 ostream& operator<<(ostream& os, const Human& obj)
 {
-	/*obj.print(os);
-	return os;*/
 	return obj.print(os);
 }
 ofstream& operator<<(ofstream& os, const Human& obj)
@@ -114,6 +108,7 @@ ifstream& operator>>(ifstream& is, Human& obj)
 class Employee :public Human
 {
 	std::string position;//Занимаемая должность
+
 public:
 	const std::string& get_position()const
 	{
@@ -128,26 +123,26 @@ public:
 		:Human(last_name, first_name, age)
 	{
 		this->position = position;//Инициализация в теле конструктора (1 вариант)
+#ifdef DEBUG
 		cout << "EConstructor:\t" << this << endl;
+#endif // DEBUG
 	}
 	~Employee()
 	{
+#ifdef DEBUG
 		cout << "EDestructor:\t" << this << endl;
+#endif // DEBUG
 	}
 	ostream& print(ostream& os)const
 	{
 		Human::print(os);
-		os.width(10);
-		os << left;
-		os << position;
+		os.width(15); os << left; os << position;
 		return os;
 	}
 	ofstream& print(ofstream& os)const
 	{
 		Human::print(os);
-		os.width(10);
-		os << left;
-		os << position << "|";
+		os.width(15); os << left; os << position << "|";
 		return os;
 	}
 	istream& input(istream& is)
@@ -162,53 +157,53 @@ public:
 		std::getline(is, position, '|');
 		return is;
 	}
-	virtual double count_salary()const = 0;
+	virtual double count_monthly_salary()const = 0;
 };
 
 class ResidentEmployee :public Employee
 {
-	double salary;
+	double const_salary;//Зарплата
 public:
-	double get_salary()const
+	double get_const_salary()const
 	{
-		return salary;
+		return const_salary;
 	}
-	void set_salary(double salary)
+	void set_const_salary(double salary)
 	{
-		this->salary = salary;
+		this->const_salary = salary;
 	}
 	ResidentEmployee(const string& last_name, const string& first_name, unsigned int age,
 		const std::string& position,
-		double salary)
+		double const_salary)
 		:Employee(last_name, first_name, age, position)
 	{
-		set_salary(salary);//Инициализация в теле конструктора (2 вариант)
+		set_const_salary(const_salary);//Инициализация в теле конструктора (2 вариант)
+#ifdef DEBUG
 		cout << "RConstructor;\t" << this << endl;
+#endif // DEBUG
 	}
 	~ResidentEmployee()
 	{
+#ifdef DEBUG
 		cout << "RDestructor:\t" << this << endl;
+#endif // DEBUG
 	}
 	ostream& print(ostream& os)const
 	{
 		Human::print(os);
-		os.width(16);
-		os << left;
-		os << salary;
+		os.width(25); os << left; os << const_salary;
 		return os;
 	}
 	ofstream& print(ofstream& os)const
 	{
 		Human::print(os);
-		os.width(10);
-		os << left;
-		os << salary << "RUB" << "|";
+		os.width(25); os << right; os << const_salary << "RUB" << "|";
 		return os;
 	}
 	istream& input(istream& is)
 	{
 		Human::input(is);
-		is >> salary;
+		is >> const_salary;
 		return is;
 	}
 	ifstream& input(ifstream& is)
@@ -216,19 +211,19 @@ public:
 		Human::input(is);
 		string salary_buffer;
 		std::getline(is, salary_buffer, '|');
-		this->salary = std::stod(salary_buffer);
+		this->const_salary = std::stod(salary_buffer);	//stod() - преобразует строку в double
 		return is;
 	}
-	double count_salary()const
+	double count_monthly_salary()const
 	{
-		return salary;
+		return const_salary;
 	}
 };
 
 class HourEmployee :public Employee
 {
-	double rate;	//Ставка за час
-	int complete_hour;	//Количество отработанных часов
+	double rate;//Ставка за час
+	int complete_hour;//Количество отработанных часов
 public:
 	HourEmployee(const string& last_name, const string& first_name, unsigned int age,
 		const std::string& position,
@@ -236,19 +231,23 @@ public:
 		int complete_hour)
 		:Employee(last_name, first_name, age, position), rate(rate), complete_hour(complete_hour)//Инициализация в имени конструктора
 	{
+#ifdef DEBUG
 		cout << "HEConstructor;\t" << this << endl;
+#endif // DEBUG
 	}
 	~HourEmployee()
 	{
+#ifdef DEBUG
 		cout << "HEDestructor;\t" << this << endl;
+#endif // DEBUG
 	}
 	ostream& print(ostream& os)const
 	{
 		Human::print(os);
-		os.width(10);
+		os.width(15);
 		os << left;
 		os << rate;
-		os.width(5);
+		os.width(10);
 		os << left;
 		os << complete_hour;
 		return os;
@@ -257,10 +256,10 @@ public:
 	{
 		Human::print(os);
 		os.width(10);
-		os << left;
+		os << right;
 		os << rate << "RUB" << "|";
-		os.width(5);
-		os << left;
+		os.width(10);
+		os << right;
 		os << complete_hour << "hour" << "|";
 		return os;
 	}
@@ -282,16 +281,16 @@ public:
 		this->complete_hour = std::stod(complete_hour_buffer);
 		return is;
 	}
-	double count_salary()const
+	double count_monthly_salary()const
 	{
 		return rate * complete_hour;
 	}
 };
 
-void SaveToFile(/*const*/ Employee* department[], const int size, const string& filename);
-void Print(/*const*/ Employee* department[], const int size);
+void SaveToFile(Employee* department[], const int size, const string& filename);
+void Print(Employee* department[], const int size);
 Employee** LoadFromFile(const std::string& filename);
-Employee* HumanFactory(const std::string& human_type);
+Employee* EmployeeFactory(const std::string& human_type);
 
 void main()
 {
@@ -299,26 +298,47 @@ void main()
 	//Generalisation
 	Employee* department[] =
 	{
-		new HourEmployee("Pinkman", "Jessie", 22, "Helper", 1000, 20),
-		new HourEmployee("Versetti", "Tommy", 30, "Killer", 5000, 10),
-		new ResidentEmployee("White", "Walter", 50, "Chemist", 150000),
-		new ResidentEmployee("Diaz", "Ricardo", 55, "Director", 825000),
-		new ResidentEmployee("Schrader", "Hank", 42, "Detective", 10000),
-		new HourEmployee("Eistein", "Albert", 143, "Researcher", 3000, 15)
+		new ResidentEmployee("Strelcov", "Sergay", 51, "Fat miniboss", 30600),
+		new ResidentEmployee("Prisyazhnyy", "Pablo", 37, "Microboss", 28500),
+		new ResidentEmployee("Frolov", "Stepan", 35, "Chief spetsialist", 27000),
+		new ResidentEmployee("Detistova", "Ludmila", 61, "Chief spetsialist", 27000),
+		new ResidentEmployee("Kirillova", "Nasty", 32, "Spetsialist", 26000),
+		new ResidentEmployee("Kazakov", "Oleg", 37, "Spetsialist", 26000),
+		new ResidentEmployee("Ivanov", "Alex", 30, "Engineer", 25000),
+		new HourEmployee("Shishkin", "Alex", 27, "Consultant", 132, 192),
+		new HourEmployee("Korolev", "Stas", 35, "Slacker", 150, 192),
+		new HourEmployee("Pishin", "Vadim", 39, "Programmist", 148, 192)
 	};
-	double total_money = 0;
+	
 	//Specialisation
-	cout << endl;
+	double total_money = 0;
+	cout << "\nЕсли хотите начать выполнение программы, нажмите Enter?";
+	cin.get();
+	cout << "\nФормируем зарплатную ведомость сотрудников департамента: " << endl;
 	for (int i = 0; i < sizeof(department) / sizeof(department[0]); i++)
 	{
-		cout << *department[i] << "salary: " << department[i]->count_salary() << endl;
-		total_money += department[i]->count_salary();
+		cout << *department[i] << "salary: " << department[i]->count_monthly_salary() << endl;
+		total_money += department[i]->count_monthly_salary();
 	}
 	cout << "\nTotal money: " << setprecision(15) << total_money << " RUB" << endl;	//setprecision(15) - определяет точность выведения 15 знаков
+
+	cout << "\nЕсли хотите сохранить ведомость в файл \".txt\", нажмите Enter?";
+	cin.get();
+	system("CLS");
+	string filename;
+	SaveToFile(department, sizeof(department) / sizeof(department[0]), "Department.txt");
+	system((string("notepad ") + filename).c_str());
+
 	for (int i = 0; i < sizeof(department) / sizeof(department[0]); i++)
 	{
 		delete department[i];
 	}
+
+	cout << "\nЕсли хотите загрузить ведомость из файла \".txt\", нажмите Enter?";
+	cin.get();
+
+	Employee** load_department = LoadFromFile("Department.txt");
+	Print(load_department, 10);
 }
 
 void SaveToFile(Employee* department[], const int size, const string& filename)
@@ -358,7 +378,7 @@ Employee** LoadFromFile(const std::string& filename)
 		for (int i = 0; i < n; i++)
 		{
 			std::getline(fin, human_type, '|');
-			department[i] = HumanFactory(human_type);
+			department[i] = EmployeeFactory(human_type);
 			fin >> *department[i];
 		}
 		fin.close();
@@ -370,9 +390,9 @@ Employee** LoadFromFile(const std::string& filename)
 	}
 	return nullptr;
 }
-Employee* HumanFactory(const std::string& human_type)
+Employee* EmployeeFactory(const std::string& human_type)
 {
 	if (human_type.find("class ResidentEmployee") != string::npos) return new ResidentEmployee("last_name", "first_name", 0, "spec", 0);
-	if (human_type.find("HourEmployee") != string::npos) return new HourEmployee("last_name", "first_name", 0, "spec", 0, 0);
+	if (human_type.find("class HourEmployee") != string::npos) return new HourEmployee("last_name", "first_name", 0, "spec", 0, 0);
 	return nullptr;
 }
