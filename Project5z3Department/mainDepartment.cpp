@@ -5,8 +5,7 @@
 using namespace std;
 using std::cin;
 using std::cout;
-using std::endl;
-//Не надо забывать про commit
+
 #define tab "\t"
 
 class Human
