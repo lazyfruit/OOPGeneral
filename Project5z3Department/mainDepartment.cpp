@@ -9,6 +9,7 @@ using std::endl;
 
 class Human
 {
+protected:
 	string last_name;
 	string first_name;
 	unsigned int age;
@@ -107,14 +108,14 @@ ifstream& operator>>(ifstream& is, Human& obj)
 
 class Employee :public Human
 {
-	std::string position;//Занимаемая должность
-
+protected:
+	string position;//Занимаемая должность
 public:
-	const std::string& get_position()const
+	const string& get_position()const
 	{
 		return position;
 	}
-	void set_posotion(const std::string& position)
+	void set_posotion(const string& position)
 	{
 		this->position = position;
 	}
@@ -122,7 +123,7 @@ public:
 		const std::string& position)
 		:Human(last_name, first_name, age)
 	{
-		this->position = position;//Инициализация в теле конструктора (1 вариант)
+		set_posotion(position);//Инициализация в теле конструктора (1 вариант)
 #ifdef DEBUG
 		cout << "EConstructor:\t" << this << endl;
 #endif // DEBUG
@@ -287,6 +288,8 @@ public:
 	}
 };
 
+double total_money = 0;
+
 void SaveToFile(Employee* department[], const int size, const string& filename);
 void Print(Employee* department[], const int size);
 Employee** LoadFromFile(const std::string& filename);
@@ -311,21 +314,22 @@ void main()
 	};
 	
 	//Specialisation
-	double total_money = 0;
-	cout << "\nЕсли хотите начать выполнение программы, нажмите Enter?";
+	cout << "\nЧтобы начать выполнение программы, нажмите Enter?";
 	cin.get();
 	cout << "\nФормируем зарплатную ведомость сотрудников департамента: " << endl;
+	double total_money = 0;
 	for (int i = 0; i < sizeof(department) / sizeof(department[0]); i++)
 	{
 		cout << *department[i] << "salary: " << department[i]->count_monthly_salary() << endl;
 		total_money += department[i]->count_monthly_salary();
 	}
-	cout << "\nTotal money: " << setprecision(15) << total_money << " RUB" << endl;	//setprecision(15) - определяет точность выведения 15 знаков
-
-	cout << "\nЕсли хотите сохранить ведомость в файл \".txt\", нажмите Enter?";
-	cin.get();
+	cout << "\nTotal money: " << setprecision(15) << total_money << " RUB\n" << endl;	//setprecision(15) - определяет точность выведения 15 знаков
+	system("PAUSE");
 	system("CLS");
-	string filename;
+
+	cout << "\nЧтобы сохранить ведомость в файл \".txt\", нажмите Enter?";
+	cin.get();
+	string filename = "Department.txt";
 	SaveToFile(department, sizeof(department) / sizeof(department[0]), "Department.txt");
 	system((string("notepad ") + filename).c_str());
 
@@ -334,7 +338,9 @@ void main()
 		delete department[i];
 	}
 
-	cout << "\nЕсли хотите загрузить ведомость из файла \".txt\", нажмите Enter?";
+	system("PAUSE");
+	system("CLS");
+	cout << "\nЧтобы загрузить ведомость из файла \".txt\" и вывести на экран, нажмите Enter?";
 	cin.get();
 
 	Employee** load_department = LoadFromFile("Department.txt");
@@ -348,6 +354,7 @@ void SaveToFile(Employee* department[], const int size, const string& filename)
 	{
 		fout << *department[i] << endl;
 	}
+	fout << "\nTotal money: " << total_money << " RUB";
 	fout.close();
 }
 void Print(Employee* department[], const int size)

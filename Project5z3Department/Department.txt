@@ -8,3 +8,5 @@ class ResidentEmployee   |Ivanov         |Alex      |30        |                
 class HourEmployee       |Shishkin       |Alex      |27        |       132RUB|       192hour|
 class HourEmployee       |Korolev        |Stas      |35        |       150RUB|       192hour|
 class HourEmployee       |Pishin         |Vadim     |39        |       148RUB|       192hour|
+
+Total money: 0 RUB
