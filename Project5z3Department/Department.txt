@@ -1,12 +1,10 @@
-class ResidentEmployee   |Strelcov       |Sergay    |51        |                    30600RUB|
-class ResidentEmployee   |Prisyazhnyy    |Pablo     |37        |                    28500RUB|
-class ResidentEmployee   |Frolov         |Stepan    |35        |                    27000RUB|
-class ResidentEmployee   |Detistova      |Ludmila   |61        |                    27000RUB|
-class ResidentEmployee   |Kirillova      |Nasty     |32        |                    26000RUB|
-class ResidentEmployee   |Kazakov        |Oleg      |37        |                    26000RUB|
-class ResidentEmployee   |Ivanov         |Alex      |30        |                    25000RUB|
-class HourEmployee       |Shishkin       |Alex      |27        |       132RUB|       192hour|
-class HourEmployee       |Korolev        |Stas      |35        |       150RUB|       192hour|
-class HourEmployee       |Pishin         |Vadim     |39        |       148RUB|       192hour|
-
-Total money: 0 RUB
+class ResidentEmployee   |Strelcov       |Sergay    |51        |Fat miniboss        |                    30600RUB|
+class ResidentEmployee   |Prisyazhnyy    |Pablo     |37        |Microboss           |                    28500RUB|
+class ResidentEmployee   |Frolov         |Stepan    |35        |Chief spetsialist   |                    27000RUB|
+class ResidentEmployee   |Detistova      |Ludmila   |61        |Chief spetsialist   |                    27000RUB|
+class ResidentEmployee   |Kirillova      |Nasty     |32        |Spetsialist         |                    26000RUB|
+class ResidentEmployee   |Kazakov        |Oleg      |37        |Spetsialist         |                    26000RUB|
+class ResidentEmployee   |Ivanov         |Alex      |30        |Engineer            |                    25000RUB|
+class HourEmployee       |Shishkin       |Alex      |27        |Consultant          |       192hour|       132RUB|
+class HourEmployee       |Korolev        |Stas      |35        |Slacker             |       192hour|       150RUB|
+class HourEmployee       |Pishin         |Vadim     |39        |Programmist         |       192hour|       148RUB|

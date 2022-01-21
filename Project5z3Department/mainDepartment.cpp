@@ -1,4 +1,4 @@
-#include<iostream>
+п»ї#include<iostream>
 #include<fstream>
 #include<string>
 #include<iomanip>
@@ -6,6 +6,8 @@ using namespace std;
 using std::cin;
 using std::cout;
 using std::endl;
+
+#define tab "\t"
 
 class Human
 {
@@ -41,7 +43,7 @@ public:
 	//		Constructors:
 	Human(const string& last_name, const string& first_name, unsigned int age)
 	{
-		set_last_name(last_name);//Инициализация в теле конструктора
+		set_last_name(last_name);//РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РІ С‚РµР»Рµ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР°
 		set_first_name(first_name);
 		set_age(age);
 #ifdef DEBUG
@@ -58,7 +60,7 @@ public:
 	//		Methods:
 	virtual ostream& print(ostream& os)const
 	{
-		os.width(25);//Задает ширину поля, в которое будет выводиться следующее значение (в скобках указывается количество знакопозиций)
+		os.width(25);//Р—Р°РґР°РµС‚ С€РёСЂРёРЅСѓ РїРѕР»СЏ, РІ РєРѕС‚РѕСЂРѕРµ Р±СѓРґРµС‚ РІС‹РІРѕРґРёС‚СЊСЃСЏ СЃР»РµРґСѓСЋС‰РµРµ Р·РЅР°С‡РµРЅРёРµ (РІ СЃРєРѕР±РєР°С… СѓРєР°Р·С‹РІР°РµС‚СЃСЏ РєРѕР»РёС‡РµСЃС‚РІРѕ Р·РЅР°РєРѕРїРѕР·РёС†РёР№)
 		os << left; os << typeid(*this).name();
 		os.width(15); os << std::left; os << last_name;
 		os.width(10); os << std::left; os << first_name;
@@ -84,7 +86,7 @@ public:
 		std::getline(is, first_name, '|');
 		string age_buffer;
 		std::getline(is, age_buffer, '|');
-		this->age = std::stoi(age_buffer);	//stoi() - преобразует строку в int
+		this->age = std::stoi(age_buffer);	//stoi() - РїСЂРµРѕР±СЂР°Р·СѓРµС‚ СЃС‚СЂРѕРєСѓ РІ int
 		return is;
 	}
 };
@@ -109,7 +111,7 @@ ifstream& operator>>(ifstream& is, Human& obj)
 class Employee :public Human
 {
 protected:
-	string position;//Занимаемая должность
+	string position;//Р—Р°РЅРёРјР°РµРјР°СЏ РґРѕР»Р¶РЅРѕСЃС‚СЊ
 public:
 	const string& get_position()const
 	{
@@ -123,7 +125,7 @@ public:
 		const std::string& position)
 		:Human(last_name, first_name, age)
 	{
-		set_posotion(position);//Инициализация в теле конструктора (1 вариант)
+		set_posotion(position);//РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РІ С‚РµР»Рµ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР° (1 РІР°СЂРёР°РЅС‚)
 #ifdef DEBUG
 		cout << "EConstructor:\t" << this << endl;
 #endif // DEBUG
@@ -137,13 +139,13 @@ public:
 	ostream& print(ostream& os)const
 	{
 		Human::print(os);
-		os.width(15); os << left; os << position;
+		os.width(20); os << left; os << position;
 		return os;
 	}
 	ofstream& print(ofstream& os)const
 	{
 		Human::print(os);
-		os.width(15); os << left; os << position << "|";
+		os.width(20); os << left; os << position << "|";
 		return os;
 	}
 	istream& input(istream& is)
@@ -163,7 +165,7 @@ public:
 
 class ResidentEmployee :public Employee
 {
-	double const_salary;//Зарплата
+	double const_salary;//Р—Р°СЂРїР»Р°С‚Р°
 public:
 	double get_const_salary()const
 	{
@@ -178,7 +180,7 @@ public:
 		double const_salary)
 		:Employee(last_name, first_name, age, position)
 	{
-		set_const_salary(const_salary);//Инициализация в теле конструктора (2 вариант)
+		set_const_salary(const_salary);//РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РІ С‚РµР»Рµ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР° (2 РІР°СЂРёР°РЅС‚)
 #ifdef DEBUG
 		cout << "RConstructor;\t" << this << endl;
 #endif // DEBUG
@@ -191,28 +193,28 @@ public:
 	}
 	ostream& print(ostream& os)const
 	{
-		Human::print(os);
-		os.width(25); os << left; os << const_salary;
+		Employee::print(os);
+		os.width(25); os << right; os << const_salary;
 		return os;
 	}
 	ofstream& print(ofstream& os)const
 	{
-		Human::print(os);
+		Employee::print(os);
 		os.width(25); os << right; os << const_salary << "RUB" << "|";
 		return os;
 	}
 	istream& input(istream& is)
 	{
-		Human::input(is);
+		Employee::input(is);
 		is >> const_salary;
 		return is;
 	}
 	ifstream& input(ifstream& is)
 	{
-		Human::input(is);
+		Employee::input(is);
 		string salary_buffer;
 		std::getline(is, salary_buffer, '|');
-		this->const_salary = std::stod(salary_buffer);	//stod() - преобразует строку в double
+		this->const_salary = std::stod(salary_buffer);	//stod() - РїСЂРµРѕР±СЂР°Р·СѓРµС‚ СЃС‚СЂРѕРєСѓ РІ double
 		return is;
 	}
 	double count_monthly_salary()const
@@ -223,14 +225,14 @@ public:
 
 class HourEmployee :public Employee
 {
-	double rate;//Ставка за час
-	int complete_hour;//Количество отработанных часов
+	double rate;//РЎС‚Р°РІРєР° Р·Р° С‡Р°СЃ
+	int complete_hour;//РљРѕР»РёС‡РµСЃС‚РІРѕ РѕС‚СЂР°Р±РѕС‚Р°РЅРЅС‹С… С‡Р°СЃРѕРІ
 public:
 	HourEmployee(const string& last_name, const string& first_name, unsigned int age,
 		const std::string& position,
 		double rate,
 		int complete_hour)
-		:Employee(last_name, first_name, age, position), rate(rate), complete_hour(complete_hour)//Инициализация в имени конструктора
+		:Employee(last_name, first_name, age, position), rate(rate), complete_hour(complete_hour)//РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РІ РёРјРµРЅРё РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР°
 	{
 #ifdef DEBUG
 		cout << "HEConstructor;\t" << this << endl;
@@ -244,42 +246,42 @@ public:
 	}
 	ostream& print(ostream& os)const
 	{
-		Human::print(os);
-		os.width(15);
-		os << left;
-		os << rate;
+		Employee::print(os);
 		os.width(10);
-		os << left;
+		os << right;
 		os << complete_hour;
+		os.width(15);
+		os << right;
+		os << rate;
 		return os;
 	}
 	ofstream& print(ofstream& os)const
 	{
-		Human::print(os);
-		os.width(10);
-		os << right;
-		os << rate << "RUB" << "|";
+		Employee::print(os);
 		os.width(10);
 		os << right;
 		os << complete_hour << "hour" << "|";
+		os.width(10);
+		os << right;
+		os << rate << "RUB" << "|";
 		return os;
 	}
 	istream& input(istream& is)
 	{
-		Human::input(is);
+		Employee::input(is);
 		is >> rate;
 		is >> complete_hour;
 		return is;
 	}
 	ifstream& input(ifstream& is)
 	{
-		Human::input(is);
-		string rate_buffer;
-		std::getline(is, rate_buffer, '|');
-		this->rate = std::stod(rate_buffer);
+		Employee::input(is);
 		string complete_hour_buffer;
 		std::getline(is, complete_hour_buffer, '|');
 		this->complete_hour = std::stod(complete_hour_buffer);
+		string rate_buffer;
+		std::getline(is, rate_buffer, '|');
+		this->rate = std::stod(rate_buffer);
 		return is;
 	}
 	double count_monthly_salary()const
@@ -314,20 +316,20 @@ void main()
 	};
 	
 	//Specialisation
-	cout << "\nЧтобы начать выполнение программы, нажмите Enter?";
+	cout << "\nР§С‚РѕР±С‹ РЅР°С‡Р°С‚СЊ РІС‹РїРѕР»РЅРµРЅРёРµ РїСЂРѕРіСЂР°РјРјС‹, РЅР°Р¶РјРёС‚Рµ Enter?";
 	cin.get();
-	cout << "\nФормируем зарплатную ведомость сотрудников департамента: " << endl;
+	cout << "\nР¤РѕСЂРјРёСЂСѓРµРј Р·Р°СЂРїР»Р°С‚РЅСѓСЋ РІРµРґРѕРјРѕСЃС‚СЊ СЃРѕС‚СЂСѓРґРЅРёРєРѕРІ РґРµРїР°СЂС‚Р°РјРµРЅС‚Р°: " << endl;
 	double total_money = 0;
 	for (int i = 0; i < sizeof(department) / sizeof(department[0]); i++)
 	{
-		cout << *department[i] << "salary: " << department[i]->count_monthly_salary() << endl;
+		cout << *department[i] << tab << "salary: " << department[i]->count_monthly_salary() << endl;
 		total_money += department[i]->count_monthly_salary();
 	}
-	cout << "\nTotal money: " << setprecision(15) << total_money << " RUB\n" << endl;	//setprecision(15) - определяет точность выведения 15 знаков
+	cout << "\nTotal money: " << setprecision(15) << total_money << " RUB\n" << endl;	//setprecision(15) - РѕРїСЂРµРґРµР»СЏРµС‚ С‚РѕС‡РЅРѕСЃС‚СЊ РІС‹РІРµРґРµРЅРёСЏ 15 Р·РЅР°РєРѕРІ
 	system("PAUSE");
 	system("CLS");
 
-	cout << "\nЧтобы сохранить ведомость в файл \".txt\", нажмите Enter?";
+	cout << "\nР§С‚РѕР±С‹ СЃРѕС…СЂР°РЅРёС‚СЊ РІРµРґРѕРјРѕСЃС‚СЊ РІ С„Р°Р№Р» \".txt\", РЅР°Р¶РјРёС‚Рµ Enter?";
 	cin.get();
 	string filename = "Department.txt";
 	SaveToFile(department, sizeof(department) / sizeof(department[0]), "Department.txt");
@@ -340,7 +342,7 @@ void main()
 
 	system("PAUSE");
 	system("CLS");
-	cout << "\nЧтобы загрузить ведомость из файла \".txt\" и вывести на экран, нажмите Enter?";
+	cout << "\nР§С‚РѕР±С‹ Р·Р°РіСЂСѓР·РёС‚СЊ РІРµРґРѕРјРѕСЃС‚СЊ РёР· С„Р°Р№Р»Р° \".txt\" Рё РІС‹РІРµСЃС‚Рё РЅР° СЌРєСЂР°РЅ, РЅР°Р¶РјРёС‚Рµ Enter?";
 	cin.get();
 
 	Employee** load_department = LoadFromFile("Department.txt");
@@ -352,9 +354,9 @@ void SaveToFile(Employee* department[], const int size, const string& filename)
 	ofstream fout(filename);
 	for (int i = 0; i < size; i++)
 	{
-		fout << *department[i] << endl;
+		fout << *department[i];
+		if(i<size-1)fout << endl;
 	}
-	fout << "\nTotal money: " << total_money << " RUB";
 	fout.close();
 }
 void Print(Employee* department[], const int size)
